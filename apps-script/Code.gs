@@ -41,7 +41,7 @@ function doPost(e) {
       gradeError = String(err);
     }
 
-    log_(root, stamp, data, grading, folder.getUrl());
+    try { log_(root, stamp, data, grading, folder.getUrl()); } catch (err) { gradeError += ` (성적 시트 기록 실패: ${err})`; }
     mail_(data, stamp, blobs, grading, gradeError, folder.getUrl());
     return json_({ ok: true, graded: !!grading, gradeError: gradeError || undefined });
   } catch (err) {
@@ -174,7 +174,7 @@ function mail_(data, stamp, blobs, g, gradeError, url) {
   let rows = '';
   data.answers.forEach((a) => {
     const r = byN[a.n];
-    const w = a.type === 'vocab' ? 200 : 420;
+    const w = a.type === 'vocab' ? 300 : 420;
     const img = a.blank ? '<span style="color:#c2410c">（未作答）</span>'
       : `<img src="cid:q${a.n}" width="${w}" style="border:1px solid #f0dde3;border-radius:6px">`;
     const verdict = r ? `<div style="font-size:18px">${mark(r.score)} <b>${r.score}</b></div>
