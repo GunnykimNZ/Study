@@ -124,6 +124,21 @@ button:active { transform: scale(.96); }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fade { from { opacity: 0; } }
 @keyframes pop { from { transform: scale(.92); opacity: 0; } }
+/* handwriting examples */
+.example { background: var(--card); border-radius: 22px; padding: 18px 20px; margin-bottom: 18px; box-shadow: var(--shadow);
+           border: 1.5px dashed #f0b8ca; }
+.ex-head { font-size: 13px; font-weight: 800; color: var(--accent-ink); letter-spacing: .04em; }
+.ex-q { font-size: 16px; font-weight: 600; margin: 4px 0 12px; }
+.ex-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+.ex-grid.wide { grid-template-columns: 1fr; }
+.ex-grid figure { margin: 0; }
+.ex-grid img { display: block; width: 100%; border-radius: 10px; border: 1.5px solid #f3cfdb; }
+.ex-grid .good img { border-color: #86c59a; }
+.ex-grid figcaption { font-size: 13.5px; color: #48484a; margin-top: 6px; line-height: 1.45; }
+.ex-grid figcaption b { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; margin-right: 4px; }
+.ex-grid .good b { background: #e3f4e8; color: #1f7a3a; }
+.ex-grid .bad b { background: #fde7e0; color: var(--warn); }
+@media (max-width: 640px) { .ex-grid { grid-template-columns: 1fr; } }
 .hidden { display: none !important; }
 @media (max-width: 560px) {
   .ctx, .req { margin-left: 0; }
@@ -301,8 +316,20 @@ button:active { transform: scale(.96); }
     const wrap = $("qwrap");
     let html = "";
     Q.questions.forEach((q) => {
-      if (q.n === 1) html += `<div class="section"><div class="eyebrow">제1부 · 어휘</div><h2>어휘</h2><span>※ [1~15] 다음 중국어에 알맞은 한국어 단어를 쓰십시오.</span></div>`;
-      if (q.n === 16) html += `<div class="section"><div class="eyebrow">제2부 · 문법</div><h2>문법</h2><span>※ [16~30] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오.</span></div>`;
+      if (q.n === 1) html += `<div class="section"><div class="eyebrow">제1부 · 어휘</div><h2>어휘</h2><span>※ [1~15] 다음 중국어에 알맞은 한국어 단어를 쓰십시오.</span></div>
+        <div class="example"><div class="ex-head">작성 예시</div><div class="ex-q">〈보기〉 图书馆 → 도서관</div>
+          <div class="ex-grid">
+            <figure class="good"><img src="ex/v_good.png" alt=""><figcaption><b>좋은 예</b>크고 또박또박, 기준선 위에 썼습니다.</figcaption></figure>
+            <figure class="bad"><img src="ex/v_bad1.png" alt=""><figcaption><b>나쁜 예</b>글씨가 너무 작고 구석에 있습니다.</figcaption></figure>
+            <figure class="bad"><img src="ex/v_bad2.png" alt=""><figcaption><b>나쁜 예</b>고친 글씨를 겹쳐 썼습니다. 「지우기」를 누르고 다시 쓰십시오.</figcaption></figure>
+          </div></div>`;
+      if (q.n === 16) html += `<div class="section"><div class="eyebrow">제2부 · 문법</div><h2>문법</h2><span>※ [16~30] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오.</span></div>
+        <div class="example"><div class="ex-head">작성 예시</div><div class="ex-q">〈보기〉 我周末见朋友。 → 저는 주말에 친구를 만나요.</div>
+          <div class="ex-grid wide">
+            <figure class="good"><img src="ex/g_good.png" alt=""><figcaption><b>좋은 예</b>띄어쓰기를 지키고, 첫 번째 줄부터 기준선 위에 썼습니다. 길면 두 번째 줄에 이어 쓰십시오.</figcaption></figure>
+            <figure class="bad"><img src="ex/g_bad1.png" alt=""><figcaption><b>나쁜 예</b>글씨가 기울어지고 너무 커서 칸 밖으로 나갔습니다.</figcaption></figure>
+            <figure class="bad"><img src="ex/g_bad2.png" alt=""><figcaption><b>나쁜 예</b>띄어쓰기가 없고, 틀린 부분 위에 덧칠했습니다. 「되돌리기」를 사용하십시오.</figcaption></figure>
+          </div></div>`;
       const head = q.type === "vocab"
         ? `<div class="qtop"><span class="num">${q.n}</span><span class="prompt">${esc(q.prompt)}</span><span class="pos">${esc(q.hint)}</span></div>
            <div class="ctx">예: ${q.ctx}</div>`

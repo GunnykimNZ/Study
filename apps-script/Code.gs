@@ -2,7 +2,7 @@
  * 跟Gunny学韩语 — quiz submission receiver + AI grading.
  * - Saves each handwritten answer (PNG) to Google Drive
  * - Grades it with Gemini against ANSWER_KEYS (defined in Answers.gs, which is NOT in the public repo)
- * - Logs the score to a Google Sheet and emails a grading sheet to the script owner
+ * - Emails a grading sheet to the script owner (grading.json is also saved in the Drive folder)
  *
  * Setup:
  *   1. GEMINI_API_KEY in Script properties, or SECRET_GEMINI_API_KEY in a private Secrets.gs
@@ -13,7 +13,6 @@
  *   4. Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy (keeps the same URL).
  */
 const ROOT_FOLDER = '跟Gunny学韩语 제출';
-const SHEET_NAME = '跟Gunny学韩语 成绩记录';
 const TIMEZONE = 'Pacific/Auckland';
 // tried in order; overloaded (429/5xx) or retired (404) models fall through to the next
 const MODELS = ['gemini-3.5-flash', 'gemini-flash-latest', 'gemini-3-flash-preview', 'gemini-2.5-flash'];
@@ -41,9 +40,10 @@ function doPost(e) {
       gradeError = String(err);
     }
 
-    try { log_(root, stamp, data, grading, folder.getUrl()); } catch (err) { gradeError += ` (성적 시트 기록 실패: ${err})`; }
     mail_(data, stamp, blobs, grading, gradeError, folder.getUrl());
-    return json_({ ok: true, graded: !!grading, gradeError: gradeError || undefined });
+    const res = { ok: true, graded: !!grading, gradeError: gradeError || undefined };
+    if (/^TEST/.test(data.student)) res.grading = grading;   // test submissions only: echo results for checking
+    return json_(res);
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   }
@@ -61,18 +61,34 @@ function grade_(data) {
   const apiKey = geminiKey_();
   if (!apiKey) throw new Error('GEMINI_API_KEY is not set in Script properties');
 
-  const parts = [{ text: GRADER_PROMPT }];
+  // Pass 1 — transcribe the handwriting WITHOUT showing the answers, so the model can't "fix" spelling toward them.
+  const tParts = [{ text: READER_PROMPT }];
+  data.answers.forEach((a) => {
+    if (a.blank) return;
+    tParts.push({ text: `\n### Image ${a.n}` });
+    tParts.push({ inline_data: { mime_type: 'image/png', data: a.png } });
+  });
+  const read = {};
+  if (tParts.length > 1) {
+    const t = callGemini_(apiKey, {
+      contents: [{ role: 'user', parts: tParts }],
+      generationConfig: { temperature: 0, responseMimeType: 'application/json', responseSchema: {
+        type: 'OBJECT', properties: { items: { type: 'ARRAY', items: { type: 'OBJECT', properties: {
+          n: { type: 'INTEGER' }, jamo: { type: 'STRING' }, read: { type: 'STRING' } }, required: ['n', 'jamo', 'read'] } } }, required: ['items'] } },
+    });
+    JSON.parse(t.text).items.forEach((it) => { read[it.n] = it.read; });
+  }
+
+  // Pass 2 — grade the transcriptions (text only) against the reference answers.
+  let list = '';
   data.answers.forEach((a) => {
     const k = key[a.n] || {};
-    parts.push({ text:
-      `\n### Question ${a.n} (${a.type})\nPrompt (Chinese): ${a.prompt}\nHint/grammar: ${a.hint}\n` +
+    list += `\n### Question ${a.n} (${a.type})\nPrompt (Chinese): ${a.prompt}\nHint/grammar: ${a.hint}\n` +
       `Reference answer: ${k.answer || '(none)'}\n` +
-      (a.blank ? 'Student answer: BLANK (no image)' : 'Student answer image:') });
-    if (!a.blank) parts.push({ inline_data: { mime_type: 'image/png', data: a.png } });
+      `Student wrote: ${a.blank ? 'BLANK' : JSON.stringify(read[a.n] || '(无法辨认)')}\n`;
   });
-
   const body = {
-    contents: [{ role: 'user', parts }],
+    contents: [{ role: 'user', parts: [{ text: GRADER_PROMPT + '\n' + list }] }],
     generationConfig: {
       temperature: 0,
       responseMimeType: 'application/json',
@@ -81,11 +97,10 @@ function grade_(data) {
         properties: {
           results: { type: 'ARRAY', items: { type: 'OBJECT', properties: {
             n: { type: 'INTEGER' },
-            read: { type: 'STRING', description: 'Exact transcription of the handwriting, including mistakes' },
             score: { type: 'NUMBER', description: '1, 0.5 or 0' },
             feedback_zh: { type: 'STRING', description: 'Short feedback for the student in Simplified Chinese' },
             note_ko: { type: 'STRING', description: 'Short note for the teacher in Korean' },
-          }, required: ['n', 'read', 'score', 'feedback_zh', 'note_ko'] } },
+          }, required: ['n', 'score', 'feedback_zh', 'note_ko'] } },
           summary_zh: { type: 'STRING', description: 'Encouraging 2–3 sentence overall comment for the student in Simplified Chinese' },
           summary_ko: { type: 'STRING', description: 'Overall weak points for the teacher in Korean' },
         },
@@ -101,8 +116,8 @@ function grade_(data) {
   const blank = {};
   data.answers.forEach((a) => { blank[a.n] = a.blank; });
   g.results.forEach((r) => {
+    r.read = blank[r.n] ? '' : (read[r.n] || '(无法辨认)');
     r.score = blank[r.n] ? 0 : Math.max(0, Math.min(1, Math.round((Number(r.score) || 0) * 2) / 2));
-    if (blank[r.n]) { r.read = ''; }
   });
   g.total = g.results.reduce((s, r) => s + r.score, 0);
   g.max = data.answers.length;
@@ -110,20 +125,30 @@ function grade_(data) {
   return g;
 }
 
+const READER_PROMPT = `You are an OCR engine for handwritten Korean written by a Chinese learner with a stylus.
+For each image, transcribe EXACTLY what is written, as a strict copyist. The student may have made spelling mistakes; your job is to record them, not fix them.
+Method — for every syllable block, look at the strokes and decompose it into jamo FIRST, then compose:
+- "jamo": the decomposition, syllables separated by spaces, e.g. "ㅎㅏㄱ ㅅㅐㅇ" for 학생.
+- Vowel check: ㅐ has its short horizontal tick pointing RIGHT (between the two vertical lines); ㅔ has the tick pointing LEFT (outside, before the first vertical). ㅒ/ㅖ likewise. Look at every vowel, do not infer it from the word.
+- "read": the syllables composed from your jamo, with spaces and punctuation as written.
+- Do NOT correct spelling, spacing, grammar or conjugation, and do not guess the intended word. Non-words are expected.
+- Ignore the pink guide lines. If one syllable is unreadable use "?"; if the whole image is illegible return "(无法辨认)".
+Return one item per image number.`;
+
 const GRADER_PROMPT = `You are grading a handwritten Korean quiz for a Chinese-speaking learner (beginner–intermediate, textbook unit on holidays/vacation).
-Each question has a Chinese prompt, a reference answer, and an image of the student's handwriting (written with a stylus).
+Each question has a Chinese prompt, a reference answer, and "Student wrote": an exact transcription of the student's handwriting.
+Treat the transcription as exactly what the student wrote — do not assume OCR errors and do not fix anything.
 
 For every question:
-1. "read": transcribe EXACTLY what the student wrote in Hangul, keeping spelling mistakes. Do not correct it. If illegible, write "(无法辨认)".
-2. "score":
+1. "score":
    - vocab questions: 1 if the word is spelled exactly right (ignore handwriting style); 0 otherwise. No partial credit.
    - grammar questions: 1 if the sentence is natural, means the same as the Chinese, uses the required grammar pattern correctly, and has no spelling errors.
      0.5 if the required grammar is used correctly but there is a minor mistake (one spelling error, wrong particle, small vocabulary slip, missing word).
      0 if the required grammar is missing/wrong or the meaning is different.
      Accept valid alternatives to the reference answer (different but correct word choice, 해요체 or 합니다체, omitted subject, etc.).
    - BLANK answers get 0.
-3. "feedback_zh": 1 short sentence in Simplified Chinese for the student. If wrong, show the correct form in Korean. Friendly tone.
-4. "note_ko": 1 short note in Korean for the teacher (what the error was, or "정답").
+2. "feedback_zh": 1 short sentence in Simplified Chinese for the student. If wrong, show the correct form in Korean. Friendly tone.
+3. "note_ko": 1 short note in Korean for the teacher (what the error was, or "정답").
 Return results for every question number, in order.`;
 
 function callGemini_(apiKey, body) {
@@ -151,21 +176,6 @@ function callGemini_(apiKey, body) {
 }
 
 /* ---------------- outputs ---------------- */
-
-function log_(root, stamp, data, g, url) {
-  const it = root.getFilesByName(SHEET_NAME);
-  let ss;
-  if (it.hasNext()) {
-    ss = SpreadsheetApp.open(it.next());
-  } else {
-    ss = SpreadsheetApp.create(SHEET_NAME);
-    DriveApp.getFileById(ss.getId()).moveTo(root);
-    ss.getSheets()[0].appendRow(['提交时间', '学生', '测验', '得分', '满分', '用时(分)', '作答', 'Drive']);
-  }
-  const done = data.answers.filter((a) => !a.blank).length;
-  ss.getSheets()[0].appendRow([stamp, data.student, data.quiz, g ? g.total : '채점 실패', data.answers.length,
-    Math.round(data.seconds / 6) / 10, `${done}/${data.answers.length}`, url]);
-}
 
 function mail_(data, stamp, blobs, g, gradeError, url) {
   const byN = {};
