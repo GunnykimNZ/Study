@@ -124,6 +124,26 @@ button:active { transform: scale(.96); }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fade { from { opacity: 0; } }
 @keyframes pop { from { transform: scale(.92); opacity: 0; } }
+/* results */
+.result { background: var(--card); border-radius: 22px; padding: 20px 22px; margin-top: 24px; box-shadow: var(--shadow); text-align: center; }
+.r-wait { color: #48484a; line-height: 1.8; }
+.r-eyebrow { font-size: 13px; font-weight: 800; color: var(--accent-ink); }
+.r-score { font-size: 54px; font-weight: 800; color: var(--accent); line-height: 1.1; }
+.r-score span { font-size: 22px; color: var(--muted); }
+.r-sum { margin-top: 8px; color: #48484a; }
+.r-item { margin-top: 12px; border-radius: 12px; padding: 10px 14px; font-size: 15px; text-align: left; }
+.r-item.ok { background: #e3f4e8; color: #1f5c33; }
+.r-item.half { background: #fdf2dc; color: #7a5212; }
+.r-item.no { background: #fde7e0; color: #9a3412; }
+.r-ans { font-weight: 700; margin-left: 6px; }
+/* multiple choice */
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.opt { display: flex; align-items: center; gap: 10px; text-align: left; font-size: 17px; padding: 14px 16px;
+       border-radius: 14px; background: var(--soft); color: var(--ink); border: 2px solid transparent; }
+.opt .mark { font-size: 19px; color: var(--accent-ink); font-weight: 700; }
+.opt.sel { background: var(--accent-soft); border-color: var(--accent); font-weight: 700; }
+.locked .opt { pointer-events: none; }
+@media (max-width: 560px) { .opts { grid-template-columns: 1fr; } }
 /* handwriting examples */
 .example { background: var(--card); border-radius: 22px; padding: 18px 20px; margin-bottom: 18px; box-shadow: var(--shadow);
            border: 1.5px dashed #f0b8ca; }
@@ -149,7 +169,7 @@ button:active { transform: scale(.96); }
 </style>
 </head>
 <body>
-<script>window.QUIZ = {"quizId": "ko-unit10-xiong", "quiz": "제10과 휴일과 방학", "student": "🐻 Xiong Wanqi", "date": "2026년 10월 15일", "endpoint": "https://script.google.com/macros/s/AKfycbxfjCuN6AM3mo0fM24PJydO_tnFXUOGhmrO5jftiu0dVezQpqJaYTpqfDr1CrYHtMB0/exec", "questions": [{"n": 1, "type": "vocab", "prompt": "公休日（法定节假日）", "ctx": "国庆节是<u>公休日</u>，所以不上班。", "hint": "명사"}, {"n": 2, "type": "vocab", "prompt": "连休，长假", "ctx": "中秋节<u>连休</u>的时候你打算做什么？", "hint": "명사"}, {"n": 3, "type": "vocab", "prompt": "住宿", "ctx": "旅行之前要先订好<u>住宿</u>。", "hint": "명사"}, {"n": 4, "type": "vocab", "prompt": "准备物品", "ctx": "去爬山的<u>准备物品</u>多吗？", "hint": "명사"}, {"n": 5, "type": "vocab", "prompt": "登山鞋", "ctx": "爬山的时候一定要穿<u>登山鞋</u>。", "hint": "명사"}, {"n": 6, "type": "vocab", "prompt": "（工作、学习等）堆积，积压", "ctx": "放假的时候我要做<u>积压</u>的作业。", "hint": "자동사"}, {"n": 7, "type": "vocab", "prompt": "一有空就……，抽空", "ctx": "我<u>抽空</u>背韩语单词。", "hint": "부사"}, {"n": 8, "type": "vocab", "prompt": "休假季节，假期旺季", "ctx": "<u>假期旺季</u>机票很贵。", "hint": "명사"}, {"n": 9, "type": "vocab", "prompt": "预购（票）", "ctx": "周末的电影票最好在网上<u>预购</u>。", "hint": "타동사"}, {"n": 10, "type": "vocab", "prompt": "到外面用餐", "ctx": "我们一周在外面<u>吃</u>三次<u>饭</u>。", "hint": "명사"}, {"n": 11, "type": "vocab", "prompt": "令人感动的", "ctx": "这部电影的结局很<u>感人</u>。", "hint": "명사 / 관형사"}, {"n": 12, "type": "vocab", "prompt": "忧郁，郁闷", "ctx": "下雨天我总是觉得很<u>忧郁</u>。", "hint": "형용사"}, {"n": 13, "type": "vocab", "prompt": "景色，风景", "ctx": "济州岛的<u>风景</u>真的很美。", "hint": "명사"}, {"n": 14, "type": "vocab", "prompt": "围棋", "ctx": "爷爷每天都和朋友下<u>围棋</u>。", "hint": "명사"}, {"n": 15, "type": "vocab", "prompt": "家务", "ctx": "周末我一般在家做<u>家务</u>。", "hint": "명사"}, {"n": 16, "type": "grammar", "prompt": "我打算这个周末在家休息。", "tag": "-(으)려고 하다", "req": "", "hint": "-(으)려고 하다"}, {"n": 17, "type": "grammar", "prompt": "上周末我本来打算学习，但是没有课本。", "tag": "-(으)려고 하다", "req": "「-(으)려고 했는데」 형태로 쓰십시오.", "hint": "-(으)려고 하다 · 「-(으)려고 했는데」 형태로 쓰십시오."}, {"n": 18, "type": "grammar", "prompt": "我学了一年韩语。", "tag": "N 동안", "req": "", "hint": "N 동안"}, {"n": 19, "type": "grammar", "prompt": "放假期间我想多去旅行。", "tag": "N 동안", "req": "", "hint": "N 동안"}, {"n": 20, "type": "grammar", "prompt": "吃饭的时候请不要看手机。", "tag": "-(으)ㄹ 때", "req": "", "hint": "-(으)ㄹ 때"}, {"n": 21, "type": "grammar", "prompt": "我还是学生的时候常常去图书馆。", "tag": "-았/었을 때", "req": "", "hint": "-았/었을 때"}, {"n": 22, "type": "grammar", "prompt": "心情好的时候我会唱歌。", "tag": "-(으)ㄹ 때", "req": "「부르다」의 활용에 주의하십시오.", "hint": "-(으)ㄹ 때 · 「부르다」의 활용에 주의하십시오."}, {"n": 23, "type": "grammar", "prompt": "韩国菜中，什么最好吃？", "tag": "N 중에서", "req": "", "hint": "N 중에서"}, {"n": 24, "type": "grammar", "prompt": "我的朋友中，小伟个子最高。", "tag": "N 중에서", "req": "‘小伟’는 ‘웨이’로 쓰십시오.", "hint": "N 중에서 · ‘小伟’는 ‘웨이’로 쓰십시오."}, {"n": 25, "type": "grammar", "prompt": "我一个星期大概见一次朋友。", "tag": "N에 ~쯤", "req": "", "hint": "N에 ~쯤"}, {"n": 26, "type": "grammar", "prompt": "我一天大约睡七个小时。", "tag": "N에 ~쯤", "req": "", "hint": "N에 ~쯤"}, {"n": 27, "type": "grammar", "prompt": "太忙了，所以没能去看电影。", "tag": "못", "req": "「못 + 동사」 형태로 쓰십시오.", "hint": "못 · 「못 + 동사」 형태로 쓰십시오."}, {"n": 28, "type": "grammar", "prompt": "我一滴酒都不能喝。", "tag": "-지 못하다", "req": "「-지 못하다」 형태로 쓰십시오.", "hint": "-지 못하다 · 「-지 못하다」 형태로 쓰십시오."}, {"n": 29, "type": "grammar", "prompt": "睡觉之前我会看书。", "tag": "-기 전에", "req": "", "hint": "-기 전에"}, {"n": 30, "type": "grammar", "prompt": "十分钟前朋友打来了电话。", "tag": "N 전에", "req": "", "hint": "N 전에"}]};</script>
+<script>window.QUIZ = {"quizId": "ko-unit10-v2-xiong", "quiz": "제10과 휴일과 방학", "student": "🐻 Xiong Wanqi", "date": "2026년 10월 15일", "endpoint": "https://script.google.com/macros/s/AKfycbxfjCuN6AM3mo0fM24PJydO_tnFXUOGhmrO5jftiu0dVezQpqJaYTpqfDr1CrYHtMB0/exec", "questions": [{"n": 1, "type": "vocab", "prompt": "公休日（法定节假日）", "ctx": "国庆节是<u>公休日</u>，所以不上班。", "hint": "명사"}, {"n": 2, "type": "vocab", "prompt": "连休，长假", "ctx": "中秋节<u>连休</u>的时候你打算做什么？", "hint": "명사"}, {"n": 3, "type": "vocab", "prompt": "住宿", "ctx": "旅行之前要先订好<u>住宿</u>。", "hint": "명사"}, {"n": 4, "type": "vocab", "prompt": "准备物品", "ctx": "去露营的<u>准备物品</u>多吗？", "hint": "명사"}, {"n": 5, "type": "vocab", "prompt": "登山鞋", "ctx": "爬山的时候一定要穿<u>登山鞋</u>。", "hint": "명사"}, {"n": 6, "type": "vocab", "prompt": "（工作、学习等）堆积，积压", "ctx": "放假的时候我要做<u>积压</u>的作业。", "hint": "자동사"}, {"n": 7, "type": "vocab", "prompt": "一有空就……，抽空", "ctx": "我<u>抽空</u>背韩语单词。", "hint": "부사"}, {"n": 8, "type": "vocab", "prompt": "休假季节，假期旺季", "ctx": "<u>假期旺季</u>机票很贵。", "hint": "명사"}, {"n": 9, "type": "vocab", "prompt": "预购（票）", "ctx": "周末的电影票最好在网上<u>预购</u>。", "hint": "타동사"}, {"n": 10, "type": "vocab", "prompt": "到外面用餐", "ctx": "我们一周在外面<u>吃</u>三次<u>饭</u>。", "hint": "명사"}, {"n": 11, "type": "vocab", "prompt": "令人感动的", "ctx": "这部电影的结局很<u>感人</u>。", "hint": "명사 / 관형사"}, {"n": 12, "type": "vocab", "prompt": "忧郁，郁闷", "ctx": "下雨天我总是觉得很<u>忧郁</u>。", "hint": "형용사"}, {"n": 13, "type": "vocab", "prompt": "景色，风景", "ctx": "济州岛的<u>风景</u>真的很美。", "hint": "명사"}, {"n": 14, "type": "vocab", "prompt": "围棋", "ctx": "爷爷每天都和朋友下<u>围棋</u>。", "hint": "명사"}, {"n": 15, "type": "vocab", "prompt": "家务", "ctx": "周末我一般在家做<u>家务</u>。", "hint": "명사"}, {"n": 16, "type": "vocab", "prompt": "旅游胜地", "ctx": "这个城市是有名的<u>旅游胜地</u>。", "hint": "명사"}, {"n": 17, "type": "vocab", "prompt": "温泉", "ctx": "冬天去泡<u>温泉</u>最舒服了。", "hint": "명사"}, {"n": 18, "type": "vocab", "prompt": "钓鱼", "ctx": "爸爸周末常常去河边<u>钓鱼</u>。", "hint": "명사"}, {"n": 19, "type": "vocab", "prompt": "结交，交往", "ctx": "我在大学<u>交</u>了很多外国朋友。", "hint": "타동사"}, {"n": 20, "type": "vocab", "prompt": "到处，各处", "ctx": "放假的时候我想去<u>各处</u>看看。", "hint": "명사"}, {"n": 21, "type": "mc", "prompt": "내일 친구와 같이 영화를 (　　) 해요.", "options": ["봐서", "보려고", "보지만", "보면서"], "hint": "-(으)려고 하다"}, {"n": 22, "type": "mc", "prompt": "저는 어제 두 시간 (　　) 계속 숙제를 했어요.", "options": ["때", "중에서", "동안", "전에"], "hint": "N 동안"}, {"n": 23, "type": "mc", "prompt": "시간이 (　　) 보통 뭐 해요?", "options": ["있을 때", "있으려고", "있기 전에", "있어서"], "hint": "-(으)ㄹ 때"}, {"n": 24, "type": "mc", "prompt": "과일 (　　) 사과를 제일 좋아해요.", "options": ["동안", "때", "전에", "중에서"], "hint": "N 중에서"}, {"n": 25, "type": "mc", "prompt": "저는 일주일(　　) 세 번쯤 운동해요.", "options": ["을", "에", "에서", "의"], "hint": "N에 ~쯤"}, {"n": 26, "type": "mc", "prompt": "다리를 다쳐서 오늘은 축구를 (　　).", "options": ["하려고 해요", "할 때", "못 해요", "하기 전에"], "hint": "못"}, {"n": 27, "type": "mc", "prompt": "(　　) 손을 씻으세요.", "options": ["밥을 먹기 전에", "밥을 먹을 동안", "밥을 먹으려고", "밥을 먹지 못해서"], "hint": "-기 전에"}, {"n": 28, "type": "mc", "prompt": "어제 집에 (　　) 때 비가 왔어요.", "options": ["도착하려고", "도착하기", "도착하지", "도착했을"], "hint": "-았/었을 때"}, {"n": 29, "type": "mc", "prompt": "주말에 바다에 (　　) 비가 와서 못 갔어요.", "options": ["갈 때", "가려고 했는데", "가는 동안", "가기 전에"], "hint": "-(으)려고 했는데"}, {"n": 30, "type": "mc", "prompt": "어제 노래방에서 노래를 많이 (　　).", "options": ["부렀어요", "부르었어요", "불렀어요", "불르었어요"], "hint": "르 불규칙"}, {"n": 31, "type": "grammar", "prompt": "我打算明天早点起床。", "tag": "-(으)려고 하다", "req": "", "hint": "-(으)려고 하다"}, {"n": 32, "type": "grammar", "prompt": "我本来想给朋友打电话，但是没有时间。", "tag": "-(으)려고 하다", "req": "「-(으)려고 했는데」 형태로 쓰십시오.", "hint": "-(으)려고 하다 · 「-(으)려고 했는데」 형태로 쓰십시오."}, {"n": 33, "type": "grammar", "prompt": "我在韩国住了三个月。", "tag": "N 동안", "req": "", "hint": "N 동안"}, {"n": 34, "type": "grammar", "prompt": "我累的时候喝咖啡。", "tag": "-(으)ㄹ 때", "req": "", "hint": "-(으)ㄹ 때"}, {"n": 35, "type": "grammar", "prompt": "我小时候住在北京。", "tag": "-았/었을 때", "req": "「-았/었을 때」 형태로 쓰십시오.", "hint": "-았/었을 때 · 「-았/었을 때」 형태로 쓰십시오."}, {"n": 36, "type": "grammar", "prompt": "在所有季节中，我最喜欢春天。", "tag": "N 중에서", "req": "", "hint": "N 중에서"}, {"n": 37, "type": "grammar", "prompt": "我一个月大概去两次电影院。", "tag": "N에 ~쯤", "req": "", "hint": "N에 ~쯤"}, {"n": 38, "type": "grammar", "prompt": "昨天太累了，所以没能写作业。", "tag": "못", "req": "「못 + 동사」 형태로 쓰십시오.", "hint": "못 · 「못 + 동사」 형태로 쓰십시오."}, {"n": 39, "type": "grammar", "prompt": "我不会游泳。", "tag": "-지 못하다", "req": "「-지 못하다」 형태로 쓰십시오.", "hint": "-지 못하다 · 「-지 못하다」 형태로 쓰십시오."}, {"n": 40, "type": "grammar", "prompt": "出门之前请关灯。", "tag": "-기 전에", "req": "", "hint": "-기 전에"}]};</script>
 
 <div id="cover" class="wrap cover">
   <div class="brandbar"><span>跟Gunny学韩语</span><span class="pill">한국어 능력 평가</span></div>
@@ -158,17 +178,17 @@ button:active { transform: scale(.96); }
   <div class="brand-sub">Korean with Gunny · 한국어 같이 해요</div>
   <div class="hero">
     <div class="title" id="quizTitle"></div>
-    <div class="title-sub">어휘 15문항 · 문법 15문항 · 시험 시간 약 30분</div>
+    <div class="title-sub">어휘 20문항 · 문법 객관식 10문항 · 문법 주관식 10문항 · 시험 시간 약 40분</div>
     <div class="meta">
       <div class="stu"><small>수험자</small><b id="stu"></b></div>
       <div><small>시험일</small><b id="dt"></b></div>
       <div><small>담당 교사</small><b>Gunny</b></div>
-      <div><small>문항 수</small><b>30</b></div>
+      <div><small>문항 수</small><b>40</b></div>
     </div>
     <ul class="rules">
       <li><span class="ic">1</span><span>모든 답은 <b>Apple Pencil로 직접 손으로 쓰십시오.</b> 키보드 입력은 할 수 없습니다.</span></li>
       <li><span class="ic">2</span><span><b>어휘</b>: 중국어 뜻과 예문을 보고 알맞은 한국어 단어를 칸에 쓰십시오.</span></li>
-      <li><span class="ic">3</span><span><b>문법</b>: 제시된 문법을 사용하여 중국어 문장을 한국어로 쓰십시오.</span></li>
+      <li><span class="ic">3</span><span><b>문법</b>: 객관식은 알맞은 답을 하나 고르고, 주관식은 제시된 문법을 사용하여 중국어 문장을 한국어로 쓰십시오.</span></li>
       <li><span class="ic">4</span><span>화면은 손가락으로 넘기고, 글씨는 펜으로 쓰십시오. 고칠 때는 「되돌리기」 또는 「지우기」를 누르십시오.</span></li>
       <li><span class="ic">5</span><span>답안 작성이 끝나면 <b>「답안 제출」</b>을 누르십시오. 제출 후에는 답을 고칠 수 없습니다.</span></li>
     </ul>
@@ -211,7 +231,7 @@ button:active { transform: scale(.96); }
     get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } },
     set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
   };
-  let state = Object.assign({ strokes: {}, startedAt: null, submittedAt: null }, store.get());
+  let state = Object.assign({ strokes: {}, choices: {}, startedAt: null, submittedAt: null }, store.get());
   const save = () => store.set(state);
 
   $("quizTitle").textContent = Q.quiz;
@@ -310,20 +330,21 @@ button:active { transform: scale(.96); }
     canvas.addEventListener("pointercancel", end);
   }
 
-  function esc(s) { return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+  function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 
   function build() {
     const wrap = $("qwrap");
     let html = "";
     Q.questions.forEach((q) => {
-      if (q.n === 1) html += `<div class="section"><div class="eyebrow">제1부 · 어휘</div><h2>어휘</h2><span>※ [1~15] 다음 중국어에 알맞은 한국어 단어를 쓰십시오.</span></div>
+      if (q.n === 1) html += `<div class="section"><div class="eyebrow">제1부 · 어휘</div><h2>어휘</h2><span>※ [1~20] 다음 중국어에 알맞은 한국어 단어를 쓰십시오.</span></div>
         <div class="example"><div class="ex-head">작성 예시</div><div class="ex-q">〈보기〉 图书馆 → 도서관</div>
           <div class="ex-grid">
             <figure class="good"><img src="ex/v_good.png" alt=""><figcaption><b>좋은 예</b>크고 또박또박, 기준선 위에 썼습니다.</figcaption></figure>
             <figure class="bad"><img src="ex/v_bad1.png" alt=""><figcaption><b>나쁜 예</b>글씨가 너무 작고 구석에 있습니다.</figcaption></figure>
             <figure class="bad"><img src="ex/v_bad2.png" alt=""><figcaption><b>나쁜 예</b>고친 글씨를 겹쳐 썼습니다. 「지우기」를 누르고 다시 쓰십시오.</figcaption></figure>
           </div></div>`;
-      if (q.n === 16) html += `<div class="section"><div class="eyebrow">제2부 · 문법</div><h2>문법</h2><span>※ [16~30] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오.</span></div>
+      if (q.n === 21) html += `<div class="section"><div class="eyebrow">제2부 · 문법 (객관식)</div><h2>문법 객관식</h2><span>※ [21~30] (　　)에 들어갈 가장 알맞은 것을 고르십시오.</span></div>`;
+      if (q.n === 31) html += `<div class="section"><div class="eyebrow">제3부 · 문법 (주관식)</div><h2>문법 주관식</h2><span>※ [31~40] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오.</span></div>
         <div class="example"><div class="ex-head">작성 예시</div><div class="ex-q">〈보기〉 我周末见朋友。 → 저는 주말에 친구를 만나요.</div>
           <div class="ex-grid wide">
             <figure class="good"><img src="ex/g_good.png" alt=""><figcaption><b>좋은 예</b>띄어쓰기를 지키고, 첫 번째 줄부터 기준선 위에 썼습니다. 길면 두 번째 줄에 이어 쓰십시오.</figcaption></figure>
@@ -335,20 +356,31 @@ button:active { transform: scale(.96); }
            <div class="ctx">예: ${q.ctx}</div>`
         : `<div class="qtop"><span class="num">${q.n}</span><span class="prompt">${esc(q.prompt)}</span><span class="tag">${esc(q.tag)}</span></div>
            ${q.req ? `<div class="req">※ ${esc(q.req)}</div>` : ""}`;
-      const style = "";
+      if (q.type === "mc") {
+        html += `<div class="q" id="q${q.n}"><div class="qtop"><span class="num">${q.n}</span><span class="prompt">${esc(q.prompt)}</span></div>
+          <div class="opts">${q.options.map((o, i) => `<button class="opt" data-q="${q.n}" data-i="${i}"><span class="mark">${"①②③④"[i]}</span>${esc(o)}</button>`).join("")}</div>
+        </div>`;
+        return;
+      }
       html += `<div class="q" id="q${q.n}">${head}
-        <div class="pad ${q.type}"${style}><canvas data-n="${q.n}"></canvas></div>
+        <div class="pad ${q.type}"><canvas data-n="${q.n}"></canvas></div>
         <div class="tools"><button data-undo="${q.n}">↶ 되돌리기</button><button data-clear="${q.n}">지우기</button></div>
       </div>`;
     });
     html += `<div class="endcard">마지막 문항입니다. 답안을 다시 확인한 후 제출하십시오.<br><button class="start" id="endSubmit">답안 제출</button></div>`;
     wrap.innerHTML = html;
     $("endSubmit").addEventListener("click", () => $("submitBtn").click());
-    Q.questions.forEach((q) => {
+    Q.questions.filter((q) => q.type !== "mc").forEach((q) => {
       pads[q.n] = { q, canvas: wrap.querySelector(`canvas[data-n="${q.n}"]`) };
       attach(q.n);
     });
     wrap.addEventListener("click", (e) => {
+      const opt = e.target.closest(".opt");
+      if (opt) {
+        if (state.submittedAt) return;
+        state.choices[opt.dataset.q] = +opt.dataset.i;
+        save(); refresh(); return;
+      }
       const u = e.target.dataset.undo, c = e.target.dataset.clear;
       if (u) { (state.strokes[u] || []).pop(); }
       else if (c) { state.strokes[c] = []; }
@@ -359,10 +391,14 @@ button:active { transform: scale(.96); }
     Object.keys(pads).forEach(fit);
   }
 
-  const answered = () => Q.questions.filter((q) => (state.strokes[q.n] || []).length).length;
+  const isDone = (q) => q.type === "mc" ? state.choices[q.n] != null : !!(state.strokes[q.n] || []).length;
+  const answered = () => Q.questions.filter(isDone).length;
 
   function refresh() {
-    Q.questions.forEach((q) => $("q" + q.n).classList.toggle("done", !!(state.strokes[q.n] || []).length));
+    Q.questions.forEach((q) => {
+      $("q" + q.n).classList.toggle("done", isDone(q));
+      if (q.type === "mc") $("q" + q.n).querySelectorAll(".opt").forEach((b) => b.classList.toggle("sel", state.choices[q.n] === +b.dataset.i));
+    });
     $("progress").textContent = `${answered()}/${Q.questions.length}`;
     $("fill").style.width = (answered() / Q.questions.length * 100) + "%";
   }
@@ -379,7 +415,7 @@ button:active { transform: scale(.96); }
     $("cover").classList.add("hidden");
     $("exam").classList.remove("hidden");
     build(); refresh(); tick(); setInterval(tick, 1000);
-    if (state.submittedAt) lock();
+    if (state.submittedAt) { lock(); loadResult(); }
     window.scrollTo(0, 0);
   }
 
@@ -392,6 +428,40 @@ button:active { transform: scale(.96); }
     drawGuides(ctx, q, w, h);
     (state.strokes[q.n] || []).forEach((s) => drawStroke(ctx, s));
     return c.toDataURL("image/png").split(",")[1];
+  }
+
+  // ---------- results (published by the teacher after grading) ----------
+  async function loadResult() {
+    if (!state.submissionId || !Q.endpoint) return;
+    let box = $("resultBox");
+    if (!box) {
+      box = document.createElement("div"); box.id = "resultBox"; box.className = "result";
+      $("qwrap").prepend(box);
+    }
+    box.innerHTML = `<div class="r-wait">채점 중입니다. 선생님이 채점을 마치면 여기에 결과가 표시됩니다.<br><button class="chip" id="reloadRes">결과 다시 확인</button></div>`;
+    $("reloadRes").onclick = loadResult;
+    try {
+      const res = await fetch(`${Q.endpoint}?action=result&id=${encodeURIComponent(state.submissionId)}`);
+      const d = await res.json();
+      if (!d.ok || !d.ready) return;
+      showResult(d.result, box);
+    } catch (e) { /* keep the waiting message */ }
+  }
+
+  function showResult(r, box) {
+    box.innerHTML = `<div class="r-eyebrow">채점 결과</div>
+      <div class="r-score">${r.score}<span> / ${r.max}</span></div>
+      <div class="r-sum">${esc(r.summary_zh || "")}</div>`;
+    (r.items || []).forEach((x) => {
+      const card = $("q" + x.n); if (!card) return;
+      card.querySelectorAll(".r-item").forEach((e) => e.remove());
+      const cls = x.score === 1 ? "ok" : x.score === 0.5 ? "half" : "no";
+      const label = x.score === 1 ? "정답" : x.score === 0.5 ? "부분 정답" : "오답";
+      const el = document.createElement("div"); el.className = "r-item " + cls;
+      el.innerHTML = `<b>${label} · ${x.score}점</b>${x.score === 1 ? "" : ` <span class="r-ans">정답: ${esc(x.answer || "")}</span>`}
+        <div>${esc(x.feedback_zh || "")}</div>`;
+      card.appendChild(el);
+    });
   }
 
   function lock() {
@@ -418,6 +488,10 @@ button:active { transform: scale(.96); }
       startedAt: new Date(state.startedAt).toISOString(), submittedAt: new Date(submittedAt).toISOString(),
       seconds: Math.round((submittedAt - state.startedAt) / 1000),
       answers: Q.questions.map((q) => {
+        if (q.type === "mc") {
+          const c = state.choices[q.n];
+          return { n: q.n, type: "mc", prompt: q.prompt, hint: q.hint, options: q.options, blank: c == null, choice: c == null ? null : c };
+        }
         const blank = !(state.strokes[q.n] || []).length;
         return { n: q.n, type: q.type, prompt: q.prompt, hint: q.hint, blank, png: blank ? "" : exportPng(q) };
       }),
@@ -427,8 +501,8 @@ button:active { transform: scale(.96); }
       const res = await fetch(Q.endpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data.ok === false) throw new Error(data.error || res.status);
-      state.submittedAt = submittedAt; save(); lock(); tick();
-      status("ok", "제출되었습니다", "수고하셨습니다! 채점 결과는 Gunny 선생님이 알려 드립니다.", false);
+      state.submittedAt = submittedAt; state.submissionId = data.id || null; save(); lock(); tick(); loadResult();
+      status("ok", "제출되었습니다", "수고하셨습니다! 채점이 끝나면 이 페이지에서 결과를 확인할 수 있습니다.", false);
       setTimeout(() => $("statusModal").classList.remove("show"), 4000);
     } catch (err) {
       status("warn", "제출에 실패했습니다", "인터넷 연결을 확인한 후 다시 제출하십시오. 답안은 이 iPad에 저장되어 있습니다.", true);
