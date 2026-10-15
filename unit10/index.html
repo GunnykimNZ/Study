@@ -386,7 +386,7 @@ button:active { transform: scale(.96); }
   async function send() {
     $("confirmModal").classList.remove("show");
     if (!Q.endpoint) { status("⚠️", "提交地址还没设置", "请告诉 Gunny 老师。你的答案已保存在这台 iPad 上。", false); return; }
-    status("⏳", "正在提交…", "请不要关闭页面。", false);
+    status("⏳", "正在提交…", "大约需要 30 秒，请不要关闭页面 🙏", false);
     const submittedAt = Date.now();
     const payload = {
       quizId: Q.quizId, quiz: Q.quiz, student: Q.student,
