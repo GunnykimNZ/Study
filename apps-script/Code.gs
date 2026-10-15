@@ -5,8 +5,9 @@
  * - Logs the score to a Google Sheet and emails a grading sheet to the script owner
  *
  * Setup:
- *   1. Project Settings → Script properties → add GEMINI_API_KEY (free key from https://aistudio.google.com/apikey)
- *      Optional: GEMINI_MODEL (default "gemini-flash-latest")
+ *   1. GEMINI_API_KEY in Script properties, or SECRET_GEMINI_API_KEY in a private Secrets.gs
+ *      (free key from https://aistudio.google.com/apikey)
+ *      Optional: GEMINI_MODEL to try first (otherwise MODELS below)
  *   2. Add a second file "Answers.gs" with the answer keys.
  *   3. Run setup() once from the editor to authorize and check the Gemini key.
  *   4. Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy (keeps the same URL).
@@ -14,7 +15,8 @@
 const ROOT_FOLDER = '跟Gunny学韩语 제출';
 const SHEET_NAME = '跟Gunny学韩语 成绩记录';
 const TIMEZONE = 'Pacific/Auckland';
-const DEFAULT_MODEL = 'gemini-flash-latest';
+// tried in order; overloaded (429/5xx) or retired (404) models fall through to the next
+const MODELS = ['gemini-3.5-flash', 'gemini-flash-latest', 'gemini-3-flash-preview', 'gemini-2.5-flash'];
 
 function doPost(e) {
   try {
@@ -56,7 +58,7 @@ function doGet() {
 function grade_(data) {
   const key = (typeof ANSWER_KEYS !== 'undefined') && ANSWER_KEYS[data.quizId];
   if (!key) throw new Error(`No answer key for quizId "${data.quizId}" (check Answers.gs)`);
-  const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+  const apiKey = geminiKey_();
   if (!apiKey) throw new Error('GEMINI_API_KEY is not set in Script properties');
 
   const parts = [{ text: GRADER_PROMPT }];
@@ -92,14 +94,7 @@ function grade_(data) {
     },
   };
 
-  const model = PropertiesService.getScriptProperties().getProperty('GEMINI_MODEL') || DEFAULT_MODEL;
-  const res = UrlFetchApp.fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-    { method: 'post', contentType: 'application/json', headers: { 'x-goog-api-key': apiKey },
-      payload: JSON.stringify(body), muteHttpExceptions: true });
-  if (res.getResponseCode() !== 200) throw new Error(`Gemini ${res.getResponseCode()}: ${res.getContentText().slice(0, 300)}`);
-  const out = JSON.parse(res.getContentText());
-  const text = out.candidates[0].content.parts.map((p) => p.text || '').join('');
+  const { text, model } = callGemini_(apiKey, body);
   const g = JSON.parse(text);
 
   // trust nothing about blanks or score range from the model
@@ -130,6 +125,30 @@ For every question:
 3. "feedback_zh": 1 short sentence in Simplified Chinese for the student. If wrong, show the correct form in Korean. Friendly tone.
 4. "note_ko": 1 short note in Korean for the teacher (what the error was, or "정답").
 Return results for every question number, in order.`;
+
+function callGemini_(apiKey, body) {
+  const first = PropertiesService.getScriptProperties().getProperty('GEMINI_MODEL');
+  const models = (first ? [first] : []).concat(MODELS.filter((m) => m !== first));
+  const errors = [];
+  for (const model of models) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const res = UrlFetchApp.fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: 'post', contentType: 'application/json', headers: { 'x-goog-api-key': apiKey },
+        payload: JSON.stringify(body), muteHttpExceptions: true });
+      const code = res.getResponseCode();
+      if (code === 200) {
+        const out = JSON.parse(res.getContentText());
+        const text = out.candidates[0].content.parts.filter((p) => !p.thought).map((p) => p.text || '').join('');
+        return { text, model };
+      }
+      errors.push(`${model} ${code}`);
+      if (code === 404 || code === 400) break;          // model gone / bad request: next model
+      if (code === 401 || code === 403) throw new Error(`Gemini key rejected (${code})`);
+      Utilities.sleep(3000);                             // 429 / 5xx: wait, retry once, then next model
+    }
+  }
+  throw new Error('All Gemini models failed: ' + errors.join(', '));
+}
 
 /* ---------------- outputs ---------------- */
 
@@ -195,17 +214,20 @@ function mail_(data, stamp, blobs, g, gradeError, url) {
 
 /* ---------------- helpers ---------------- */
 
+/** Key from Script properties, or from the private Secrets.gs pushed by clasp (never in the public repo). */
+function geminiKey_() {
+  return PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY') ||
+    ((typeof SECRET_GEMINI_API_KEY !== 'undefined' && SECRET_GEMINI_API_KEY) || '');
+}
+
 /** Run once from the editor: authorizes Drive/Gmail/Sheets/UrlFetch and checks the Gemini key. */
 function setup() {
   folder_(ROOT_FOLDER);
-  const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
-  if (!apiKey) throw new Error('Script properties에 GEMINI_API_KEY를 먼저 추가하세요.');
+  const apiKey = geminiKey_();
+  if (!apiKey) throw new Error('GEMINI_API_KEY가 없습니다 (Script properties 또는 Secrets.gs).');
   if (typeof ANSWER_KEYS === 'undefined') throw new Error('Answers.gs 파일을 추가하세요.');
-  const model = PropertiesService.getScriptProperties().getProperty('GEMINI_MODEL') || DEFAULT_MODEL;
-  const res = UrlFetchApp.fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: 'post', contentType: 'application/json', headers: { 'x-goog-api-key': apiKey }, muteHttpExceptions: true,
-    payload: JSON.stringify({ contents: [{ parts: [{ text: 'Reply with: OK' }] }] }) });
-  Logger.log(`Gemini (${model}) → HTTP ${res.getResponseCode()}: ${res.getContentText().slice(0, 200)}`);
+  const r = callGemini_(apiKey, { contents: [{ parts: [{ text: 'Reply with: OK' }] }] });
+  Logger.log(`Gemini (${r.model}) → ${r.text}`);
   Logger.log(`Answer keys loaded: ${Object.keys(ANSWER_KEYS).join(', ')}`);
   Logger.log(`Mail quota left today: ${MailApp.getRemainingDailyQuota()}`);
 }
