@@ -417,7 +417,7 @@ button:active { transform: scale(.96); }
 
   const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
   const LIMIT = (Q.timeLimitMin || 0) * 60;   // seconds; 0 = no limit
-  let sending = false, timeUpTried = false;
+  let sending = false, timeUpTried = false, checking = false;   // checking: asking the server about an earlier submit
 
   function tick() {
     if (!state.startedAt) return;
@@ -436,20 +436,55 @@ button:active { transform: scale(.96); }
 
   // time limit reached: stop writing and submit whatever is there (also on reload after the deadline)
   function timeUp() {
-    if (state.submittedAt || sending || timeUpTried) return;   // one automatic try per page load; then the retry button
+    if (state.submittedAt || sending || checking || timeUpTried) return;   // one automatic try per page load; then the retry button
     timeUpTried = true;
     if (!state.timeUp) { state.timeUp = true; save(); }
     document.body.classList.add("locked");
     send(true);
   }
 
+  const newKey = () => (window.crypto && crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+
   function startExam() {
-    if (!state.startedAt) { state.startedAt = Date.now(); save(); }
+    const legacy = state.startedAt && !state.submittedAt && !state.clientKey;   // started before submit keys existed
+    if (!state.startedAt) { state.startedAt = Date.now(); state.clientKey = newKey(); save(); }
     $("cover").classList.add("hidden");
     $("exam").classList.remove("hidden");
     build(); refresh(); tick(); setInterval(tick, 1000);
     if (state.submittedAt) { lock(); loadResult(); }
+    else if (legacy || state.sendTried) {
+      // find out whether an earlier submit already arrived BEFORE the time-up auto-submit may run
+      checking = true;
+      (legacy ? recoverLegacy() : confirmArrived().then((id) => { if (id) markSubmitted(id); }))
+        .finally(() => { checking = false; tick(); });
+    }
     window.scrollTo(0, 0);
+  }
+
+  // the server may have saved a submit whose response never reached this iPad — ask before showing an error
+  async function confirmArrived(tries = 1) {
+    for (let i = 0; i < tries; i++) {
+      if (i) await new Promise((r) => setTimeout(r, 4000));
+      try {
+        const d = await (await fetch(`${Q.endpoint}?action=status&key=${encodeURIComponent(state.clientKey)}`)).json();
+        if (d.ok && d.id) return d.id;
+      } catch (e) { /* offline: try again */ }
+    }
+    return null;
+  }
+
+  async function recoverLegacy() {
+    try {
+      const d = await (await fetch(`${Q.endpoint}?action=find&quizId=${encodeURIComponent(Q.quizId)}&student=${encodeURIComponent(Q.student)}`)).json();
+      if (d.ok && d.id) { markSubmitted(d.id); return; }
+    } catch (e) { /* keep going */ }
+    state.clientKey = newKey(); save();
+  }
+
+  function markSubmitted(id, when) {
+    state.submittedAt = when || state.submittedAt || Date.now();
+    state.submissionId = id; save(); lock(); tick(); loadResult();
+    $("statusModal").classList.remove("show");
   }
 
   // ---------- submit ----------
@@ -511,15 +546,17 @@ button:active { transform: scale(.96); }
   }
 
   async function send(auto) {
-    if (sending || state.submittedAt) return;
+    if (sending || checking || state.submittedAt) return;
     $("confirmModal").classList.remove("show");
     if (!Q.endpoint) { status("warn", "제출 주소가 설정되지 않았습니다", "Gunny 선생님께 알려 주십시오. 답안은 이 iPad에 저장되어 있습니다.", false); return; }
     sending = true;
+    if (!state.clientKey) { state.clientKey = newKey(); }
+    state.sendTried = true; save();
     status("wait", auto === true ? "시험 시간이 끝났습니다" : "제출 중…",
-      auto === true ? "작성한 답안을 자동으로 제출하고 있습니다. 페이지를 닫지 마십시오." : "약 30초 정도 걸립니다. 페이지를 닫지 마십시오.", false);
+      auto === true ? "작성한 답안을 자동으로 제출하고 있습니다. 페이지를 닫지 마십시오." : "잠시만 기다려 주십시오. 페이지를 닫지 마십시오.", false);
     const submittedAt = Date.now();
     const payload = {
-      quizId: Q.quizId, quiz: Q.quiz, student: Q.student, timeUp: !!state.timeUp,
+      quizId: Q.quizId, quiz: Q.quiz, student: Q.student, timeUp: !!state.timeUp, clientKey: state.clientKey,
       startedAt: new Date(state.startedAt).toISOString(), submittedAt: new Date(submittedAt).toISOString(),
       seconds: Math.round((submittedAt - state.startedAt) / 1000),
       answers: Q.questions.map((q) => {
@@ -531,16 +568,28 @@ button:active { transform: scale(.96); }
         return { n: q.n, type: q.type, prompt: q.prompt, hint: q.hint, blank, png: blank ? "" : exportPng(q) };
       }),
     };
+    const body = JSON.stringify(payload);
+    const post = async () => {
+      // text/plain avoids a CORS preflight, which Apps Script can't answer; give up waiting after 90 s
+      const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 90000);
+      try {
+        const res = await fetch(Q.endpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body, signal: ctl.signal });
+        const data = await res.json().catch(() => ({}));
+        return res.ok && data.ok !== false && data.id ? data.id : null;
+      } catch (e) { return null; } finally { clearTimeout(t); }
+    };
     try {
-      // text/plain avoids a CORS preflight, which Apps Script can't answer
-      const res = await fetch(Q.endpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || data.ok === false) throw new Error(data.error || res.status);
-      state.submittedAt = submittedAt; state.submissionId = data.id || null; save(); lock(); tick(); loadResult();
+      // 1) send  2) if the answer got lost, ask whether it arrived  3) resend once (same key → no duplicate)  4) ask again
+      let id = await post();
+      if (!id) { status("wait", "제출 확인 중…", "연결이 느립니다. 답안이 도착했는지 확인하고 있습니다.", false); id = await confirmArrived(3); }
+      if (!id) id = await post();
+      if (!id) id = await confirmArrived(3);
+      if (!id) throw new Error("not delivered");
+      markSubmitted(id, submittedAt);
       status("ok", "제출되었습니다", "수고하셨습니다! 채점이 끝나면 이 페이지에서 결과를 확인할 수 있습니다.", false);
       setTimeout(() => $("statusModal").classList.remove("show"), 4000);
     } catch (err) {
-      status("warn", "제출에 실패했습니다", "인터넷 연결을 확인한 후 다시 제출하십시오. 답안은 이 iPad에 저장되어 있습니다.", true);
+      status("warn", "제출에 실패했습니다", "인터넷 연결을 확인한 후 「다시 제출」을 누르십시오. 같은 답안이 두 번 제출되지 않으니 안심하십시오. 답안은 이 iPad에 저장되어 있습니다.", true);
     } finally {
       sending = false;
     }

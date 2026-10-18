@@ -5,7 +5,10 @@
  * Teacher tools → GET  ?action=list&token  → list submissions
  *                 GET  ?action=get&id&token → full submission (answers + handwriting PNGs)
  *                 POST {action:'result', token, id, result} → save grading, email teacher
+ *                 POST {action:'trash', token, id} → move a test / junk submission to the Drive trash
  * Student page  → GET  ?action=result&id    → grading result (only once published)
+ *                 GET  ?action=status&key   → id of the submission sent with this client key (to confirm a submit whose response was lost)
+ *                 GET  ?action=find&quizId&student → latest submission id for that quiz/student (recovery for pages from before client keys)
  *
  * ADMIN_TOKEN lives in Script properties or in a private Secrets.gs (never in the public repo).
  * Deploy: Deploy → Manage deployments → ✏️ Edit → Version: New version (keeps the same URL).
@@ -17,6 +20,7 @@ function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
     if (data.action === 'result') return json_(saveResult_(data));
+    if (data.action === 'trash') { auth_(data.token); submissionFolder_(data.id).setTrashed(true); return json_({ ok: true }); }
     return json_(saveSubmission_(data));
   } catch (err) {
     return json_({ ok: false, error: String(err) });
@@ -27,6 +31,8 @@ function doGet(e) {
   try {
     const p = (e && e.parameter) || {};
     if (p.action === 'result') return json_(readResult_(p.id));
+    if (p.action === 'status') return json_({ ok: true, id: findByKey_(p.key) });
+    if (p.action === 'find') return json_({ ok: true, id: findLatest_(p.quizId, p.student) });
     if (p.action === 'list') { auth_(p.token); return json_({ ok: true, items: list_() }); }
     if (p.action === 'get') { auth_(p.token); return json_({ ok: true, submission: readJson_(submissionFolder_(p.id), 'submission.json') }); }
     return json_({ ok: true, service: 'gunny-quiz' });
@@ -38,13 +44,15 @@ function doGet(e) {
 /* ---------------- submissions ---------------- */
 
 function saveSubmission_(data) {
+  // retries of the same submit (same client key) return the first one instead of saving a duplicate
+  const existing = findByKey_(data.clientKey);
+  if (existing) return { ok: true, id: existing, duplicate: true };
   const stamp = Utilities.formatDate(new Date(data.submittedAt), TIMEZONE, 'yyyy-MM-dd HH:mm');
   const folder = folder_(ROOT_FOLDER).createFolder(`${stamp} · ${data.student} · ${data.quiz}`);
+  if (data.clientKey) folder.setDescription('key:' + data.clientKey);
+  // only one file, so the response comes back in a few seconds (saving ~50 PNGs one by one took ~50 s and Safari gave up);
+  // the handwriting images stay inside submission.json and are extracted by tools/submissions.py
   folder.createFile('submission.json', JSON.stringify(data), MimeType.PLAIN_TEXT);
-  data.answers.forEach((a) => {
-    if (a.blank || !a.png) return;
-    folder.createFile(Utilities.newBlob(Utilities.base64Decode(a.png), 'image/png', `Q${String(a.n).padStart(2, '0')}.png`));
-  });
   const done = data.answers.filter((a) => !a.blank).length;
   MailApp.sendEmail({
     to: Session.getEffectiveUser().getEmail(),
@@ -56,6 +64,31 @@ function saveSubmission_(data) {
       <p><a href="${folder.getUrl()}">Drive 폴더 열기</a> · 제출 ID: <code>${folder.getId()}</code></p></div>`,
   });
   return { ok: true, id: folder.getId() };
+}
+
+function findByKey_(key) {
+  if (!key) return null;
+  const it = folder_(ROOT_FOLDER).getFolders();
+  while (it.hasNext()) {
+    const f = it.next();
+    if (f.getDescription() === 'key:' + key) return f.getId();
+  }
+  return null;
+}
+
+function findLatest_(quizId, student) {
+  let best = null;
+  const it = folder_(ROOT_FOLDER).getFolders();
+  while (it.hasNext()) {
+    const f = it.next();
+    if (student && f.getName().indexOf(student) < 0) continue;
+    const files = f.getFilesByName('submission.json');
+    if (!files.hasNext()) continue;
+    const sub = JSON.parse(files.next().getBlob().getDataAsString('UTF-8'));
+    if (sub.quizId !== quizId || sub.student !== student) continue;
+    if (!best || f.getDateCreated() > best.getDateCreated()) best = f;
+  }
+  return best ? best.getId() : null;
 }
 
 function list_() {
