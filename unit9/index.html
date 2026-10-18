@@ -63,6 +63,7 @@ button:active { transform: scale(.96); }
        border-bottom: 1px solid var(--line); }
 .bar-in { max-width: 760px; margin: 0 auto; padding: 10px 16px 0; display: flex; align-items: center; gap: 10px; }
 .bar .who { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .stat.warn { color: var(--warn); font-weight: 800; }
 .bar .stat { color: var(--muted); font-size: 13.5px; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 500; }
 .bar .grow { flex: 1; }
 .chip { font-size: 13px; padding: 7px 12px; border-radius: 999px; background: #fff; color: #3a3a3c; white-space: nowrap; box-shadow: var(--shadow); }
@@ -163,14 +164,13 @@ button:active { transform: scale(.96); }
 .hidden { display: none !important; }
 @media (max-width: 560px) {
   .ctx, .req { margin-left: 0; }
-  .bar .stat.time { display: none; }
   .meta { grid-template-columns: 1fr 1fr; }
   .brand { font-size: 34px; }
 }
 </style>
 </head>
 <body class="finger">
-<script>window.QUIZ = {"quizId": "ko-unit9-review10-xiong", "quiz": "제9과 날씨와 계절 + 제10과 복습", "student": "🐻 Xiong Wanqi", "date": "2026년 10월 18일", "quizZh": "第9课 天气与季节（날씨와 계절）＋ 第10课复习", "dateZh": "2026年10月18日", "coverSubZh": "第10课复习 20题 · 第9课 词汇 20题 · 语法选择题 10题 · 语法书写题 10题 · 考试时间约 60 分钟", "sections": [{"start": 1, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 어휘", "direction": "※ [1~9] 다음 중국어에 알맞은 한국어 단어를 쓰십시오."}, {"start": 10, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 문법 객관식", "direction": "※ [10~12] 가장 알맞은 것을 고르십시오."}, {"start": 13, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 문법 주관식", "direction": "※ [13~20] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오."}, {"start": 21, "eyebrow": "제2부 · 9과", "title": "어휘", "direction": "※ [21~40] 다음 중국어에 알맞은 한국어 단어를 쓰십시오."}, {"start": 41, "eyebrow": "제3부 · 9과", "title": "문법 객관식", "direction": "※ [41~50] (　　)에 들어갈 가장 알맞은 것을 고르십시오."}, {"start": 51, "eyebrow": "제4부 · 9과", "title": "문법 주관식", "direction": "※ [51~60] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오."}], "endpoint": "https://script.google.com/macros/s/AKfycbxfjCuN6AM3mo0fM24PJydO_tnFXUOGhmrO5jftiu0dVezQpqJaYTpqfDr1CrYHtMB0/exec", "questions": [{"n": 1, "type": "vocab", "prompt": "令人感动的", "ctx": "这本小说的故事很<u>感人</u>。", "hint": "명사 / 관형사"}, {"n": 2, "type": "vocab", "prompt": "景色，风景", "ctx": "山顶的<u>风景</u>特别好。", "hint": "명사"}, {"n": 3, "type": "vocab", "prompt": "旅游胜地", "ctx": "济州岛是韩国有名的<u>旅游胜地</u>。", "hint": "명사"}, {"n": 4, "type": "vocab", "prompt": "钓鱼", "ctx": "周末我和爸爸去湖边<u>钓鱼</u>。", "hint": "명사"}, {"n": 5, "type": "vocab", "prompt": "预购（票）", "ctx": "我在网上<u>预购</u>了火车票。", "hint": "타동사"}, {"n": 6, "type": "vocab", "prompt": "一有空就……，抽空", "ctx": "她<u>一有空就</u>看韩剧学韩语。", "hint": "부사"}, {"n": 7, "type": "vocab", "prompt": "忧郁，郁闷", "ctx": "考试没考好，我有点<u>郁闷</u>。", "hint": "형용사"}, {"n": 8, "type": "vocab", "prompt": "休假季节，假期旺季", "ctx": "<u>假期旺季</u>酒店很难订。", "hint": "명사"}, {"n": 9, "type": "vocab", "prompt": "（工作、学习等）堆积，积压", "ctx": "生病了几天，工作都<u>堆积</u>起来了。", "hint": "자동사"}, {"n": 10, "type": "mc", "prompt": "선생님이 제 이름을 (　　).", "options": ["부렀어요", "불렀어요", "부르었어요", "불르었어요"], "hint": "르 불규칙"}, {"n": 11, "type": "mc", "prompt": "다음 중 맞게 쓴 것을 고르십시오.", "options": ["너무 비곤해서 쉬어요.", "거피를 마셔요.", "노무 바빠요.", "친구한테 전화해요."], "hint": "맞춤법 (거센소리·모음)"}, {"n": 12, "type": "mc", "prompt": "제가 (　　) 때 부모님과 같이 살았어요.", "options": ["어리었을", "어려을", "어렸을", "어릴었을"], "hint": "-았/었을 때"}, {"n": 13, "type": "grammar", "prompt": "我打算明天早上六点起床。", "tag": "-(으)려고 하다", "req": "", "hint": "-(으)려고 하다"}, {"n": 14, "type": "grammar", "prompt": "我本来想给朋友写信，但是没有时间。", "tag": "-(으)려고 했는데", "req": "「-(으)려고 했는데」 형태로 쓰십시오.", "hint": "-(으)려고 했는데 · 「-(으)려고 했는데」 형태로 쓰십시오."}, {"n": 15, "type": "grammar", "prompt": "我累的时候早点睡觉。", "tag": "-(으)ㄹ 때", "req": "", "hint": "-(으)ㄹ 때"}, {"n": 16, "type": "grammar", "prompt": "我上大学的时候学了韩语。", "tag": "-았/었을 때", "req": "「-았/었을 때」 형태로 쓰십시오.", "hint": "-았/었을 때 · 「-았/었을 때」 형태로 쓰십시오."}, {"n": 17, "type": "grammar", "prompt": "在四个季节中，我最喜欢秋天。", "tag": "N 중에서", "req": "", "hint": "N 중에서"}, {"n": 18, "type": "grammar", "prompt": "太累了，所以没能去运动。", "tag": "못", "req": "「못 + 동사」 형태로 쓰십시오.", "hint": "못 · 「못 + 동사」 형태로 쓰십시오."}, {"n": 19, "type": "grammar", "prompt": "我不会做饭。", "tag": "-지 못하다", "req": "「-지 못하다」 형태로 쓰십시오.", "hint": "-지 못하다 · 「-지 못하다」 형태로 쓰십시오."}, {"n": 20, "type": "grammar", "prompt": "睡觉之前请关灯。", "tag": "-기 전에", "req": "", "hint": "-기 전에"}, {"n": 21, "type": "vocab", "prompt": "迎春花", "ctx": "春天公园里开满了<u>迎春花</u>。", "hint": "명사"}, {"n": 22, "type": "vocab", "prompt": "金达莱（杜鹃花）", "ctx": "山上的<u>金达莱</u>都开了。", "hint": "명사"}, {"n": 23, "type": "vocab", "prompt": "红叶", "ctx": "秋天我们去山上看<u>红叶</u>吧。", "hint": "명사"}, {"n": 24, "type": "vocab", "prompt": "闲，有空", "ctx": "这个周末我很<u>闲</u>。", "hint": "형용사"}, {"n": 25, "type": "vocab", "prompt": "乡下，农村", "ctx": "我奶奶住在<u>乡下</u>。", "hint": "명사"}, {"n": 26, "type": "vocab", "prompt": "樱花", "ctx": "四月的<u>樱花</u>开得很美。", "hint": "명사"}, {"n": 27, "type": "vocab", "prompt": "（天）阴", "ctx": "今天天气很<u>阴</u>，好像要下雨。", "hint": "형용사"}, {"n": 28, "type": "vocab", "prompt": "雾", "ctx": "早上<u>雾</u>很大，看不清路。", "hint": "명사"}, {"n": 29, "type": "vocab", "prompt": "（雨、雪）停", "ctx": "雨<u>停</u>了，我们出去吧。", "hint": "자동사"}, {"n": 30, "type": "vocab", "prompt": "天气预报", "ctx": "看了<u>天气预报</u>，明天会下雪。", "hint": "명사"}, {"n": 31, "type": "vocab", "prompt": "要洗的衣服，洗衣服（这件事）", "ctx": "周末我要<u>洗衣服</u>。（___를 하다）", "hint": "명사"}, {"n": 32, "type": "vocab", "prompt": "（天气）凉飕飕的，有点冷", "ctx": "早晚<u>凉飕飕</u>的，多穿点衣服。", "hint": "형용사"}, {"n": 33, "type": "vocab", "prompt": "潮湿", "ctx": "夏天韩国很<u>潮湿</u>。", "hint": "형용사"}, {"n": 34, "type": "vocab", "prompt": "海边", "ctx": "我们去<u>海边</u>散步吧。", "hint": "명사"}, {"n": 35, "type": "vocab", "prompt": "梅雨季", "ctx": "<u>梅雨季</u>每天都下雨。", "hint": "명사"}, {"n": 36, "type": "vocab", "prompt": "打雪仗", "ctx": "孩子们在外面<u>打雪仗</u>。（___을 하다）", "hint": "명사"}, {"n": 37, "type": "vocab", "prompt": "避暑", "ctx": "夏天我们去山里<u>避暑</u>。（___를 가다）", "hint": "명사"}, {"n": 38, "type": "vocab", "prompt": "海水浴场", "ctx": "釜山的<u>海水浴场</u>人很多。", "hint": "명사"}, {"n": 39, "type": "vocab", "prompt": "耳环", "ctx": "她今天戴了很漂亮的<u>耳环</u>。", "hint": "명사"}, {"n": 40, "type": "vocab", "prompt": "郊游", "ctx": "明天学校去<u>郊游</u>。（___을 가다）", "hint": "명사"}, {"n": 41, "type": "mc", "prompt": "저는 고기를 (　　) 동생은 생선을 좋아해요.", "options": ["좋아한데", "좋아하는데", "좋아하은데", "좋아할데"], "hint": "-는데"}, {"n": 42, "type": "mc", "prompt": "방은 (　　) 깨끗하지 않아요.", "options": ["넓는데", "넓을데", "넓은데", "넓데"], "hint": "-(으)ㄴ데"}, {"n": 43, "type": "mc", "prompt": "저는 한국 노래를 (　　).", "options": ["부를 수 있어요", "부르을 수 있어요", "불을 수 있어요", "부르는 수 있어요"], "hint": "-(으)ㄹ 수 있다"}, {"n": 44, "type": "mc", "prompt": "밥을 (　　) 바로 운동하면 안 돼요.", "options": ["먹는 후에", "먹을 후에", "먹기 후에", "먹은 후에"], "hint": "-(으)ㄴ 후에"}, {"n": 45, "type": "mc", "prompt": "하늘을 보니까 오후에 비가 (　　).", "options": ["오고 있었어요", "오겠어요", "올 수 없어요", "오기 전에요"], "hint": "-겠-"}, {"n": 46, "type": "mc", "prompt": "지하철이 버스(　　) 더 빨라요.", "options": ["보다", "처럼", "하고", "에서"], "hint": "N보다"}, {"n": 47, "type": "mc", "prompt": "길이 다 젖었어요. 어제 비가 많이 (　　) 것 같아요.", "options": ["오는", "올", "온", "오던"], "hint": "-(으)ㄴ 것 같다"}, {"n": 48, "type": "mc", "prompt": "와, 이 방이 참 (　　)!", "options": ["넓는군요", "넓군요", "넓은군요", "넓을군요"], "hint": "-군요"}, {"n": 49, "type": "mc", "prompt": "동생은 지금 방에서 음악을 (　　).", "options": ["들어 있어요", "듣은 후에요", "들을 수 없었어요", "듣고 있어요"], "hint": "-고 있다"}, {"n": 50, "type": "mc", "prompt": "추워서 장갑을 (　　) 있어요.", "options": ["입고", "끼고", "쓰고", "신고"], "hint": "입다/쓰다/끼다/신다"}, {"n": 51, "type": "grammar", "prompt": "我喜欢夏天，但是我姐姐喜欢冬天。", "tag": "-는데", "req": "", "hint": "-는데"}, {"n": 52, "type": "grammar", "prompt": "这件衣服很漂亮，但是太贵了。", "tag": "-(으)ㄴ데", "req": "", "hint": "-(으)ㄴ데"}, {"n": 53, "type": "grammar", "prompt": "我会弹钢琴。", "tag": "-(으)ㄹ 수 있다", "req": "", "hint": "-(으)ㄹ 수 있다"}, {"n": 54, "type": "grammar", "prompt": "路太复杂了，所以没法开车。", "tag": "-(으)ㄹ 수 없다", "req": "", "hint": "-(으)ㄹ 수 없다"}, {"n": 55, "type": "grammar", "prompt": "下班以后我去运动。", "tag": "-(으)ㄴ 후에", "req": "「동사 + -(으)ㄴ 후에」 형태로 쓰십시오.", "hint": "-(으)ㄴ 후에 · 「동사 + -(으)ㄴ 후에」 형태로 쓰십시오."}, {"n": 56, "type": "grammar", "prompt": "明天应该会很冷。", "tag": "-겠-", "req": "", "hint": "-겠-"}, {"n": 57, "type": "grammar", "prompt": "中国的人比韩国多。", "tag": "N보다", "req": "", "hint": "N보다"}, {"n": 58, "type": "grammar", "prompt": "好像快要下雪了。", "tag": "-(으)ㄹ 것 같다", "req": "", "hint": "-(으)ㄹ 것 같다"}, {"n": 59, "type": "grammar", "prompt": "（原来）你很会唱歌啊！", "tag": "-는군요", "req": "", "hint": "-는군요"}, {"n": 60, "type": "grammar", "prompt": "弟弟正在房间里看书。", "tag": "-고 있다", "req": "", "hint": "-고 있다"}]};</script>
+<script>window.QUIZ = {"quizId": "ko-unit9-review10-xiong", "quiz": "제9과 날씨와 계절 + 제10과 복습", "student": "🐻 Xiong Wanqi", "date": "2026년 10월 18일", "quizZh": "第9课 天气与季节（날씨와 계절）＋ 第10课复习", "dateZh": "2026年10月18日", "coverSubZh": "第10课复习 20题 · 第9课 词汇 20题 · 语法选择题 10题 · 语法书写题 10题 · 限时 60 分钟", "timeLimitMin": 60, "sections": [{"start": 1, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 어휘", "direction": "※ [1~9] 다음 중국어에 알맞은 한국어 단어를 쓰십시오."}, {"start": 10, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 문법 객관식", "direction": "※ [10~12] 가장 알맞은 것을 고르십시오."}, {"start": 13, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 문법 주관식", "direction": "※ [13~20] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오."}, {"start": 21, "eyebrow": "제2부 · 9과", "title": "어휘", "direction": "※ [21~40] 다음 중국어에 알맞은 한국어 단어를 쓰십시오."}, {"start": 41, "eyebrow": "제3부 · 9과", "title": "문법 객관식", "direction": "※ [41~50] (　　)에 들어갈 가장 알맞은 것을 고르십시오."}, {"start": 51, "eyebrow": "제4부 · 9과", "title": "문법 주관식", "direction": "※ [51~60] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오."}], "endpoint": "https://script.google.com/macros/s/AKfycbxfjCuN6AM3mo0fM24PJydO_tnFXUOGhmrO5jftiu0dVezQpqJaYTpqfDr1CrYHtMB0/exec", "questions": [{"n": 1, "type": "vocab", "prompt": "令人感动的", "ctx": "这本小说的故事很<u>感人</u>。", "hint": "명사 / 관형사"}, {"n": 2, "type": "vocab", "prompt": "景色，风景", "ctx": "山顶的<u>风景</u>特别好。", "hint": "명사"}, {"n": 3, "type": "vocab", "prompt": "旅游胜地", "ctx": "济州岛是韩国有名的<u>旅游胜地</u>。", "hint": "명사"}, {"n": 4, "type": "vocab", "prompt": "钓鱼", "ctx": "周末我和爸爸去湖边<u>钓鱼</u>。", "hint": "명사"}, {"n": 5, "type": "vocab", "prompt": "预购（票）", "ctx": "我在网上<u>预购</u>了火车票。", "hint": "타동사"}, {"n": 6, "type": "vocab", "prompt": "一有空就……，抽空", "ctx": "她<u>一有空就</u>看韩剧学韩语。", "hint": "부사"}, {"n": 7, "type": "vocab", "prompt": "忧郁，郁闷", "ctx": "考试没考好，我有点<u>郁闷</u>。", "hint": "형용사"}, {"n": 8, "type": "vocab", "prompt": "休假季节，假期旺季", "ctx": "<u>假期旺季</u>酒店很难订。", "hint": "명사"}, {"n": 9, "type": "vocab", "prompt": "（工作、学习等）堆积，积压", "ctx": "生病了几天，工作都<u>堆积</u>起来了。", "hint": "자동사"}, {"n": 10, "type": "mc", "prompt": "선생님이 제 이름을 (　　).", "options": ["부렀어요", "불렀어요", "부르었어요", "불르었어요"], "hint": "르 불규칙"}, {"n": 11, "type": "mc", "prompt": "다음 중 맞게 쓴 것을 고르십시오.", "options": ["너무 비곤해서 쉬어요.", "거피를 마셔요.", "노무 바빠요.", "친구한테 전화해요."], "hint": "맞춤법 (거센소리·모음)"}, {"n": 12, "type": "mc", "prompt": "제가 (　　) 때 부모님과 같이 살았어요.", "options": ["어리었을", "어려을", "어렸을", "어릴었을"], "hint": "-았/었을 때"}, {"n": 13, "type": "grammar", "prompt": "我打算明天早上六点起床。", "tag": "-(으)려고 하다", "req": "", "hint": "-(으)려고 하다"}, {"n": 14, "type": "grammar", "prompt": "我本来想给朋友写信，但是没有时间。", "tag": "-(으)려고 했는데", "req": "「-(으)려고 했는데」 형태로 쓰십시오.", "hint": "-(으)려고 했는데 · 「-(으)려고 했는데」 형태로 쓰십시오."}, {"n": 15, "type": "grammar", "prompt": "我累的时候早点睡觉。", "tag": "-(으)ㄹ 때", "req": "", "hint": "-(으)ㄹ 때"}, {"n": 16, "type": "grammar", "prompt": "我上大学的时候学了韩语。", "tag": "-았/었을 때", "req": "「-았/었을 때」 형태로 쓰십시오.", "hint": "-았/었을 때 · 「-았/었을 때」 형태로 쓰십시오."}, {"n": 17, "type": "grammar", "prompt": "在四个季节中，我最喜欢秋天。", "tag": "N 중에서", "req": "", "hint": "N 중에서"}, {"n": 18, "type": "grammar", "prompt": "太累了，所以没能去运动。", "tag": "못", "req": "「못 + 동사」 형태로 쓰십시오.", "hint": "못 · 「못 + 동사」 형태로 쓰십시오."}, {"n": 19, "type": "grammar", "prompt": "我不会做饭。", "tag": "-지 못하다", "req": "「-지 못하다」 형태로 쓰십시오.", "hint": "-지 못하다 · 「-지 못하다」 형태로 쓰십시오."}, {"n": 20, "type": "grammar", "prompt": "睡觉之前请关灯。", "tag": "-기 전에", "req": "", "hint": "-기 전에"}, {"n": 21, "type": "vocab", "prompt": "迎春花", "ctx": "春天公园里开满了<u>迎春花</u>。", "hint": "명사"}, {"n": 22, "type": "vocab", "prompt": "金达莱（杜鹃花）", "ctx": "山上的<u>金达莱</u>都开了。", "hint": "명사"}, {"n": 23, "type": "vocab", "prompt": "红叶", "ctx": "秋天我们去山上看<u>红叶</u>吧。", "hint": "명사"}, {"n": 24, "type": "vocab", "prompt": "闲，有空", "ctx": "这个周末我很<u>闲</u>。", "hint": "형용사"}, {"n": 25, "type": "vocab", "prompt": "乡下，农村", "ctx": "我奶奶住在<u>乡下</u>。", "hint": "명사"}, {"n": 26, "type": "vocab", "prompt": "樱花", "ctx": "四月的<u>樱花</u>开得很美。", "hint": "명사"}, {"n": 27, "type": "vocab", "prompt": "（天）阴", "ctx": "今天天气很<u>阴</u>，好像要下雨。", "hint": "형용사"}, {"n": 28, "type": "vocab", "prompt": "雾", "ctx": "早上<u>雾</u>很大，看不清路。", "hint": "명사"}, {"n": 29, "type": "vocab", "prompt": "（雨、雪）停", "ctx": "雨<u>停</u>了，我们出去吧。", "hint": "자동사"}, {"n": 30, "type": "vocab", "prompt": "天气预报", "ctx": "看了<u>天气预报</u>，明天会下雪。", "hint": "명사"}, {"n": 31, "type": "vocab", "prompt": "要洗的衣服，洗衣服（这件事）", "ctx": "周末我要<u>洗衣服</u>。（___를 하다）", "hint": "명사"}, {"n": 32, "type": "vocab", "prompt": "（天气）凉飕飕的，有点冷", "ctx": "早晚<u>凉飕飕</u>的，多穿点衣服。", "hint": "형용사"}, {"n": 33, "type": "vocab", "prompt": "潮湿", "ctx": "夏天韩国很<u>潮湿</u>。", "hint": "형용사"}, {"n": 34, "type": "vocab", "prompt": "海边", "ctx": "我们去<u>海边</u>散步吧。", "hint": "명사"}, {"n": 35, "type": "vocab", "prompt": "梅雨季", "ctx": "<u>梅雨季</u>每天都下雨。", "hint": "명사"}, {"n": 36, "type": "vocab", "prompt": "打雪仗", "ctx": "孩子们在外面<u>打雪仗</u>。（___을 하다）", "hint": "명사"}, {"n": 37, "type": "vocab", "prompt": "避暑", "ctx": "夏天我们去山里<u>避暑</u>。（___를 가다）", "hint": "명사"}, {"n": 38, "type": "vocab", "prompt": "海水浴场", "ctx": "釜山的<u>海水浴场</u>人很多。", "hint": "명사"}, {"n": 39, "type": "vocab", "prompt": "耳环", "ctx": "她今天戴了很漂亮的<u>耳环</u>。", "hint": "명사"}, {"n": 40, "type": "vocab", "prompt": "郊游", "ctx": "明天学校去<u>郊游</u>。（___을 가다）", "hint": "명사"}, {"n": 41, "type": "mc", "prompt": "저는 고기를 (　　) 동생은 생선을 좋아해요.", "options": ["좋아한데", "좋아하는데", "좋아하은데", "좋아할데"], "hint": "-는데"}, {"n": 42, "type": "mc", "prompt": "방은 (　　) 깨끗하지 않아요.", "options": ["넓는데", "넓을데", "넓은데", "넓데"], "hint": "-(으)ㄴ데"}, {"n": 43, "type": "mc", "prompt": "저는 한국 노래를 (　　).", "options": ["부를 수 있어요", "부르을 수 있어요", "불을 수 있어요", "부르는 수 있어요"], "hint": "-(으)ㄹ 수 있다"}, {"n": 44, "type": "mc", "prompt": "밥을 (　　) 바로 운동하면 안 돼요.", "options": ["먹는 후에", "먹을 후에", "먹기 후에", "먹은 후에"], "hint": "-(으)ㄴ 후에"}, {"n": 45, "type": "mc", "prompt": "하늘을 보니까 오후에 비가 (　　).", "options": ["오고 있었어요", "오겠어요", "올 수 없어요", "오기 전에요"], "hint": "-겠-"}, {"n": 46, "type": "mc", "prompt": "지하철이 버스(　　) 더 빨라요.", "options": ["보다", "처럼", "하고", "에서"], "hint": "N보다"}, {"n": 47, "type": "mc", "prompt": "길이 다 젖었어요. 어제 비가 많이 (　　) 것 같아요.", "options": ["오는", "올", "온", "오던"], "hint": "-(으)ㄴ 것 같다"}, {"n": 48, "type": "mc", "prompt": "와, 이 방이 참 (　　)!", "options": ["넓는군요", "넓군요", "넓은군요", "넓을군요"], "hint": "-군요"}, {"n": 49, "type": "mc", "prompt": "동생은 지금 방에서 음악을 (　　).", "options": ["들어 있어요", "듣은 후에요", "들을 수 없었어요", "듣고 있어요"], "hint": "-고 있다"}, {"n": 50, "type": "mc", "prompt": "추워서 장갑을 (　　) 있어요.", "options": ["입고", "끼고", "쓰고", "신고"], "hint": "입다/쓰다/끼다/신다"}, {"n": 51, "type": "grammar", "prompt": "我喜欢夏天，但是我姐姐喜欢冬天。", "tag": "-는데", "req": "", "hint": "-는데"}, {"n": 52, "type": "grammar", "prompt": "这件衣服很漂亮，但是太贵了。", "tag": "-(으)ㄴ데", "req": "", "hint": "-(으)ㄴ데"}, {"n": 53, "type": "grammar", "prompt": "我会弹钢琴。", "tag": "-(으)ㄹ 수 있다", "req": "", "hint": "-(으)ㄹ 수 있다"}, {"n": 54, "type": "grammar", "prompt": "路太复杂了，所以没法开车。", "tag": "-(으)ㄹ 수 없다", "req": "", "hint": "-(으)ㄹ 수 없다"}, {"n": 55, "type": "grammar", "prompt": "下班以后我去运动。", "tag": "-(으)ㄴ 후에", "req": "「동사 + -(으)ㄴ 후에」 형태로 쓰십시오.", "hint": "-(으)ㄴ 후에 · 「동사 + -(으)ㄴ 후에」 형태로 쓰십시오."}, {"n": 56, "type": "grammar", "prompt": "明天应该会很冷。", "tag": "-겠-", "req": "", "hint": "-겠-"}, {"n": 57, "type": "grammar", "prompt": "中国的人比韩国多。", "tag": "N보다", "req": "", "hint": "N보다"}, {"n": 58, "type": "grammar", "prompt": "好像快要下雪了。", "tag": "-(으)ㄹ 것 같다", "req": "", "hint": "-(으)ㄹ 것 같다"}, {"n": 59, "type": "grammar", "prompt": "（原来）你很会唱歌啊！", "tag": "-는군요", "req": "", "hint": "-는군요"}, {"n": 60, "type": "grammar", "prompt": "弟弟正在房间里看书。", "tag": "-고 있다", "req": "", "hint": "-고 있다"}]};</script>
 
 <div id="cover" class="wrap cover">
   <div class="brandbar"><span>跟Gunny学韩语</span><span class="pill">韩国语能力测试</span></div>
@@ -241,6 +241,13 @@ button:active { transform: scale(.96); }
   $("dt").textContent = Q.dateZh || Q.date;
   $("coverSub").textContent = Q.coverSubZh || "";
   $("qcount").textContent = Q.questions.length;
+  if (Q.timeLimitMin) {   // extra cover rule about the time limit, inserted before the last (joke) rule
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="ic"></span><span>考试时间为 <b>${Q.timeLimitMin} 分钟</b>。时间到了，答案会<b>自动提交</b>。</span>`;
+    const rules = document.querySelector(".rules");
+    rules.insertBefore(li, rules.lastElementChild);
+    rules.querySelectorAll(".ic").forEach((e, i) => { e.textContent = i + 1; });
+  }
   $("barWho").textContent = Q.student;
 
   // ---------- handwriting pads ----------
@@ -313,7 +320,7 @@ button:active { transform: scale(.96); }
       if (cur) e.preventDefault();
     }, { passive: false });
     canvas.addEventListener("pointerdown", (e) => {
-      if (state.submittedAt || !allowed(e) || cur) return;
+      if (state.submittedAt || state.timeUp || !allowed(e) || cur) return;
       e.preventDefault();
       pid = e.pointerId; try { canvas.setPointerCapture(pid); } catch (_) {}
       cur = [pt(e)];
@@ -382,7 +389,7 @@ button:active { transform: scale(.96); }
     wrap.addEventListener("click", (e) => {
       const opt = e.target.closest(".opt");
       if (opt) {
-        if (state.submittedAt) return;
+        if (state.submittedAt || state.timeUp) return;
         state.choices[opt.dataset.q] = +opt.dataset.i;
         save(); refresh(); return;
       }
@@ -408,11 +415,32 @@ button:active { transform: scale(.96); }
     $("fill").style.width = (answered() / Q.questions.length * 100) + "%";
   }
 
+  const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  const LIMIT = (Q.timeLimitMin || 0) * 60;   // seconds; 0 = no limit
+  let sending = false, timeUpTried = false;
+
   function tick() {
     if (!state.startedAt) return;
     const end = state.submittedAt || Date.now();
     const s = Math.floor((end - state.startedAt) / 1000);
-    $("timer").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    if (LIMIT && !state.submittedAt) {
+      const left = Math.max(0, LIMIT - s);
+      $("timer").textContent = `남은 시간 ${fmt(left)}`;
+      $("timer").classList.toggle("warn", left <= 300);
+      if (left === 0) timeUp();
+    } else {
+      $("timer").textContent = fmt(s);
+      $("timer").classList.remove("warn");
+    }
+  }
+
+  // time limit reached: stop writing and submit whatever is there (also on reload after the deadline)
+  function timeUp() {
+    if (state.submittedAt || sending || timeUpTried) return;   // one automatic try per page load; then the retry button
+    timeUpTried = true;
+    if (!state.timeUp) { state.timeUp = true; save(); }
+    document.body.classList.add("locked");
+    send(true);
   }
 
   function startExam() {
@@ -482,13 +510,16 @@ button:active { transform: scale(.96); }
     $("statusModal").classList.add("show");
   }
 
-  async function send() {
+  async function send(auto) {
+    if (sending || state.submittedAt) return;
     $("confirmModal").classList.remove("show");
     if (!Q.endpoint) { status("warn", "제출 주소가 설정되지 않았습니다", "Gunny 선생님께 알려 주십시오. 답안은 이 iPad에 저장되어 있습니다.", false); return; }
-    status("wait", "제출 중…", "약 30초 정도 걸립니다. 페이지를 닫지 마십시오.", false);
+    sending = true;
+    status("wait", auto === true ? "시험 시간이 끝났습니다" : "제출 중…",
+      auto === true ? "작성한 답안을 자동으로 제출하고 있습니다. 페이지를 닫지 마십시오." : "약 30초 정도 걸립니다. 페이지를 닫지 마십시오.", false);
     const submittedAt = Date.now();
     const payload = {
-      quizId: Q.quizId, quiz: Q.quiz, student: Q.student,
+      quizId: Q.quizId, quiz: Q.quiz, student: Q.student, timeUp: !!state.timeUp,
       startedAt: new Date(state.startedAt).toISOString(), submittedAt: new Date(submittedAt).toISOString(),
       seconds: Math.round((submittedAt - state.startedAt) / 1000),
       answers: Q.questions.map((q) => {
@@ -510,6 +541,8 @@ button:active { transform: scale(.96); }
       setTimeout(() => $("statusModal").classList.remove("show"), 4000);
     } catch (err) {
       status("warn", "제출에 실패했습니다", "인터넷 연결을 확인한 후 다시 제출하십시오. 답안은 이 iPad에 저장되어 있습니다.", true);
+    } finally {
+      sending = false;
     }
   }
 
