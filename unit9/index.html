@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>跟Gunny学韩语 · 한국어 시험</title>
+<style>
+:root {
+  --ink: #1d1d1f; --muted: #86868b; --line: #f0dde3; --soft: #fbeef2;
+  --pink: rgba(255, 182, 193, .2);           /* pastel pink @ 20% */
+  --bg: #fff3f5;                              /* same tint flattened on white */
+  --accent: #d6457a; --accent-soft: #fde4ec; --accent-ink: #b0305f;
+  --warn: #c2410c; --card: #fff;
+  --shadow: 0 1px 2px rgba(214,69,122,.06), 0 8px 24px rgba(214,69,122,.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Apple SD Gothic Neo", "Noto Sans SC", sans-serif;
+       color: var(--ink); background: var(--bg); line-height: 1.5; letter-spacing: -.01em;
+       -webkit-font-smoothing: antialiased;
+       -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+body::before { content: ""; position: fixed; inset: -20% -10% auto; height: 70vh; z-index: -1; pointer-events: none;
+               background: radial-gradient(60% 60% at 20% 20%, rgba(255,182,193,.35), transparent 70%),
+                           radial-gradient(50% 50% at 85% 10%, rgba(255,214,224,.45), transparent 70%); }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 120px; }
+button { font: inherit; cursor: pointer; border: none; -webkit-tap-highlight-color: transparent;
+         transition: transform .12s ease, background .2s ease, opacity .2s; }
+button:active { transform: scale(.96); }
+
+/* cover */
+.cover { text-align: center; padding-top: 8px; }
+.brandbar { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); padding: 14px 0; }
+.pill { display: inline-block; background: var(--card); box-shadow: var(--shadow); border-radius: 999px;
+        padding: 5px 12px; font-weight: 600; color: var(--accent-ink); font-size: 12.5px; }
+.photo { width: 168px; height: 168px; border-radius: 50%; margin: 22px auto 0;
+         background: url("../gunny.jpg") center 42%/118% no-repeat;
+         box-shadow: 0 0 0 6px #fff, 0 0 0 7px var(--line), 0 18px 40px rgba(214,69,122,.18); }
+.brand { font-size: 40px; font-weight: 800; margin-top: 26px; letter-spacing: -.02em; }
+.brand-sub { color: var(--muted); font-size: 15px; margin-top: 2px; }
+.brand-note { color: var(--muted); font-size: 14px; margin-top: 10px; }
+.hero { background: var(--card); border-radius: 26px; box-shadow: var(--shadow); padding: 24px 22px; margin-top: 30px; text-align: left; }
+.title { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+.title-sub { color: var(--muted); margin-top: 2px; font-size: 15px; }
+.meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+.meta div { background: var(--soft); border-radius: 16px; padding: 12px 14px; }
+.meta small { display: block; color: var(--muted); font-size: 12px; font-weight: 600; }
+.meta b { font-size: 16px; font-weight: 600; }
+.meta .stu { grid-column: 1 / -1; }
+.meta .stu b { font-size: 19px; color: var(--accent-ink); }
+.rules { list-style: none; margin-top: 18px; display: grid; gap: 10px; }
+.rules li { display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.55; }
+.rules .ic { flex: 0 0 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink);
+             display: grid; place-items: center; font-size: 14px; font-weight: 800; }
+.rules b { color: var(--accent-ink); }
+.start { margin-top: 26px; background: var(--accent); color: #fff; font-size: 19px; font-weight: 700;
+         padding: 17px 54px; border-radius: 999px; box-shadow: 0 10px 24px rgba(214,69,122,.32); }
+.foot-note { color: var(--muted); font-size: 13px; margin-top: 14px; }
+
+/* sticky exam bar */
+.bar { position: sticky; top: 0; z-index: 10; background: rgba(255,243,245,.82);
+       -webkit-backdrop-filter: saturate(180%) blur(18px); backdrop-filter: saturate(180%) blur(18px);
+       border-bottom: 1px solid var(--line); }
+.bar-in { max-width: 760px; margin: 0 auto; padding: 10px 16px 0; display: flex; align-items: center; gap: 10px; }
+.bar .who { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .stat { color: var(--muted); font-size: 13.5px; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 500; }
+.bar .grow { flex: 1; }
+.chip { font-size: 13px; padding: 7px 12px; border-radius: 999px; background: #fff; color: #3a3a3c; white-space: nowrap; box-shadow: var(--shadow); }
+.chip.on { background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; }
+.submit { background: var(--accent); color: #fff; font-weight: 700; padding: 9px 20px; border-radius: 999px; white-space: nowrap; }
+.submit:disabled { background: #c7c7cc; }
+.progress { max-width: 760px; margin: 10px auto 0; padding: 0 16px 10px; }
+.progress .track { height: 6px; border-radius: 99px; background: rgba(214,69,122,.12); overflow: hidden; }
+.progress .fill { height: 100%; width: 0; border-radius: 99px; background: var(--accent); transition: width .4s cubic-bezier(.2,.8,.2,1); }
+
+/* questions */
+.section { padding: 34px 4px 12px; }
+.section .eyebrow { font-size: 13px; font-weight: 700; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .06em; }
+.section h2 { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+.section span { color: #48484a; font-size: 15px; font-weight: 500; display: block; margin-top: 2px; }
+.q { background: var(--card); border-radius: 22px; padding: 20px 20px 14px; margin-bottom: 14px;
+     box-shadow: var(--shadow); border: 2px solid transparent; transition: border-color .25s; }
+.q.done { border-color: #f7c6d6; }
+.qtop { display: flex; gap: 12px; align-items: center; }
+.num { flex: 0 0 34px; height: 34px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink);
+       display: grid; place-items: center; font-weight: 800; font-size: 15px; transition: background .25s, color .25s; }
+.q.done .num { background: var(--accent); color: #fff; }
+.prompt { font-size: 20px; font-weight: 700; flex: 1; letter-spacing: -.01em; }
+.pos { font-size: 12.5px; color: var(--muted); background: var(--soft); border-radius: 999px; padding: 3px 10px; white-space: nowrap; font-weight: 600; }
+.tag { font-size: 14px; font-weight: 700; color: var(--accent-ink); background: var(--accent-soft);
+       border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+.ctx { margin: 8px 0 0 46px; color: #48484a; font-size: 15.5px; }
+.ctx u { text-decoration-color: var(--accent); text-decoration-thickness: 2.5px; text-underline-offset: 4px; }
+.req { margin: 6px 0 0 46px; color: var(--accent-ink); font-size: 14px; font-weight: 600; }
+.pad { margin-top: 14px; }
+.pad canvas { display: block; width: 100%; height: auto; background: #fff; border-radius: 14px;
+              touch-action: pan-y pinch-zoom; }
+.pad { border: 1.5px solid #f3cfdb; border-radius: 14px; overflow: hidden; }
+.finger .pad canvas { touch-action: none; }
+.pad.vocab { max-width: 640px; }
+.tools { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.tools button { font-size: 13.5px; padding: 7px 14px; border-radius: 999px; background: var(--soft); color: #48484a; font-weight: 600; }
+.locked .pad canvas { pointer-events: none; opacity: .85; }
+.locked .tools { display: none; }
+.endcard { text-align: center; padding: 30px 16px 10px; color: var(--muted); }
+.endcard button { margin-top: 12px; }
+
+/* overlays */
+.modal { position: fixed; inset: 0; z-index: 20; background: rgba(60,20,35,.28);
+         -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+         display: none; align-items: center; justify-content: center; padding: 16px; }
+.modal.show { display: flex; animation: fade .2s ease; }
+.card { background: #fff; border-radius: 26px; padding: 28px 24px 22px; max-width: 400px; width: 100%; text-align: center;
+        box-shadow: 0 30px 60px rgba(0,0,0,.15); animation: pop .25s cubic-bezier(.2,.9,.3,1.2); }
+.card h3 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.card p { color: var(--muted); margin-bottom: 20px; }
+.card .row { display: flex; gap: 10px; }
+.card .row button { flex: 1; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 16px; }
+.btn-ghost { background: var(--soft); color: var(--ink); }
+.btn-main { background: var(--accent); color: #fff; }
+.big { width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center;
+       font-size: 32px; font-weight: 800; color: #fff; background: var(--accent); }
+.big.warn { background: var(--warn); }
+.big.wait { background: none; border: 5px solid var(--accent-soft); border-top-color: var(--accent); animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { transform: scale(.92); opacity: 0; } }
+/* results */
+.result { background: var(--card); border-radius: 22px; padding: 20px 22px; margin-top: 24px; box-shadow: var(--shadow); text-align: center; }
+.r-wait { color: #48484a; line-height: 1.8; }
+.r-eyebrow { font-size: 13px; font-weight: 800; color: var(--accent-ink); }
+.r-score { font-size: 54px; font-weight: 800; color: var(--accent); line-height: 1.1; }
+.r-score span { font-size: 22px; color: var(--muted); }
+.r-sum { margin-top: 8px; color: #48484a; }
+.r-item { margin-top: 12px; border-radius: 12px; padding: 10px 14px; font-size: 15px; text-align: left; }
+.r-item.ok { background: #e3f4e8; color: #1f5c33; }
+.r-item.half { background: #fdf2dc; color: #7a5212; }
+.r-item.no { background: #fde7e0; color: #9a3412; }
+.r-ans { font-weight: 700; margin-left: 6px; }
+/* multiple choice */
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.opt { display: flex; align-items: center; gap: 10px; text-align: left; font-size: 17px; padding: 14px 16px;
+       border-radius: 14px; background: var(--soft); color: var(--ink); border: 2px solid transparent; }
+.opt .mark { font-size: 19px; color: var(--accent-ink); font-weight: 700; }
+.opt.sel { background: var(--accent-soft); border-color: var(--accent); font-weight: 700; }
+.locked .opt { pointer-events: none; }
+@media (max-width: 560px) { .opts { grid-template-columns: 1fr; } }
+/* handwriting examples */
+.example { background: var(--card); border-radius: 22px; padding: 18px 20px; margin-bottom: 18px; box-shadow: var(--shadow);
+           border: 1.5px dashed #f0b8ca; }
+.ex-head { font-size: 13px; font-weight: 800; color: var(--accent-ink); letter-spacing: .04em; }
+.ex-q { font-size: 16px; font-weight: 600; margin: 4px 0 12px; }
+.ex-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+.ex-grid.wide { grid-template-columns: 1fr; }
+.ex-grid figure { margin: 0; }
+.ex-grid img { display: block; width: 100%; border-radius: 10px; border: 1.5px solid #f3cfdb; }
+.ex-grid .good img { border-color: #86c59a; }
+.ex-grid figcaption { font-size: 13.5px; color: #48484a; margin-top: 6px; line-height: 1.45; }
+.ex-grid figcaption b { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; margin-right: 4px; }
+.ex-grid .good b { background: #e3f4e8; color: #1f7a3a; }
+.ex-grid .bad b { background: #fde7e0; color: var(--warn); }
+@media (max-width: 640px) { .ex-grid { grid-template-columns: 1fr; } }
+.hidden { display: none !important; }
+@media (max-width: 560px) {
+  .ctx, .req { margin-left: 0; }
+  .bar .stat.time { display: none; }
+  .meta { grid-template-columns: 1fr 1fr; }
+  .brand { font-size: 34px; }
+}
+</style>
+</head>
+<body class="finger">
+<script>window.QUIZ = {"quizId": "ko-unit9-review10-xiong", "quiz": "제9과 날씨와 계절 + 제10과 복습", "student": "🐻 Xiong Wanqi", "date": "2026년 10월 18일", "quizZh": "第9课 天气与季节（날씨와 계절）＋ 第10课复习", "dateZh": "2026年10月18日", "coverSubZh": "第10课复习 20题 · 第9课 词汇 20题 · 语法选择题 10题 · 语法书写题 10题 · 考试时间约 60 分钟", "sections": [{"start": 1, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 어휘", "direction": "※ [1~9] 다음 중국어에 알맞은 한국어 단어를 쓰십시오."}, {"start": 10, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 문법 객관식", "direction": "※ [10~12] 가장 알맞은 것을 고르십시오."}, {"start": 13, "eyebrow": "제1부 · 10과 복습", "title": "복습 · 문법 주관식", "direction": "※ [13~20] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오."}, {"start": 21, "eyebrow": "제2부 · 9과", "title": "어휘", "direction": "※ [21~40] 다음 중국어에 알맞은 한국어 단어를 쓰십시오."}, {"start": 41, "eyebrow": "제3부 · 9과", "title": "문법 객관식", "direction": "※ [41~50] (　　)에 들어갈 가장 알맞은 것을 고르십시오."}, {"start": 51, "eyebrow": "제4부 · 9과", "title": "문법 주관식", "direction": "※ [51~60] 제시된 문법을 사용하여 다음 문장을 한국어로 쓰십시오."}], "endpoint": "https://script.google.com/macros/s/AKfycbxfjCuN6AM3mo0fM24PJydO_tnFXUOGhmrO5jftiu0dVezQpqJaYTpqfDr1CrYHtMB0/exec", "questions": [{"n": 1, "type": "vocab", "prompt": "令人感动的", "ctx": "这本小说的故事很<u>感人</u>。", "hint": "명사 / 관형사"}, {"n": 2, "type": "vocab", "prompt": "景色，风景", "ctx": "山顶的<u>风景</u>特别好。", "hint": "명사"}, {"n": 3, "type": "vocab", "prompt": "旅游胜地", "ctx": "济州岛是韩国有名的<u>旅游胜地</u>。", "hint": "명사"}, {"n": 4, "type": "vocab", "prompt": "钓鱼", "ctx": "周末我和爸爸去湖边<u>钓鱼</u>。", "hint": "명사"}, {"n": 5, "type": "vocab", "prompt": "预购（票）", "ctx": "我在网上<u>预购</u>了火车票。", "hint": "타동사"}, {"n": 6, "type": "vocab", "prompt": "一有空就……，抽空", "ctx": "她<u>一有空就</u>看韩剧学韩语。", "hint": "부사"}, {"n": 7, "type": "vocab", "prompt": "忧郁，郁闷", "ctx": "考试没考好，我有点<u>郁闷</u>。", "hint": "형용사"}, {"n": 8, "type": "vocab", "prompt": "休假季节，假期旺季", "ctx": "<u>假期旺季</u>酒店很难订。", "hint": "명사"}, {"n": 9, "type": "vocab", "prompt": "（工作、学习等）堆积，积压", "ctx": "生病了几天，工作都<u>堆积</u>起来了。", "hint": "자동사"}, {"n": 10, "type": "mc", "prompt": "선생님이 제 이름을 (　　).", "options": ["부렀어요", "불렀어요", "부르었어요", "불르었어요"], "hint": "르 불규칙"}, {"n": 11, "type": "mc", "prompt": "다음 중 맞게 쓴 것을 고르십시오.", "options": ["너무 비곤해서 쉬어요.", "거피를 마셔요.", "노무 바빠요.", "친구한테 전화해요."], "hint": "맞춤법 (거센소리·모음)"}, {"n": 12, "type": "mc", "prompt": "제가 (　　) 때 부모님과 같이 살았어요.", "options": ["어리었을", "어려을", "어렸을", "어릴었을"], "hint": "-았/었을 때"}, {"n": 13, "type": "grammar", "prompt": "我打算明天早上六点起床。", "tag": "-(으)려고 하다", "req": "", "hint": "-(으)려고 하다"}, {"n": 14, "type": "grammar", "prompt": "我本来想给朋友写信，但是没有时间。", "tag": "-(으)려고 했는데", "req": "「-(으)려고 했는데」 형태로 쓰십시오.", "hint": "-(으)려고 했는데 · 「-(으)려고 했는데」 형태로 쓰십시오."}, {"n": 15, "type": "grammar", "prompt": "我累的时候早点睡觉。", "tag": "-(으)ㄹ 때", "req": "", "hint": "-(으)ㄹ 때"}, {"n": 16, "type": "grammar", "prompt": "我上大学的时候学了韩语。", "tag": "-았/었을 때", "req": "「-았/었을 때」 형태로 쓰십시오.", "hint": "-았/었을 때 · 「-았/었을 때」 형태로 쓰십시오."}, {"n": 17, "type": "grammar", "prompt": "在四个季节中，我最喜欢秋天。", "tag": "N 중에서", "req": "", "hint": "N 중에서"}, {"n": 18, "type": "grammar", "prompt": "太累了，所以没能去运动。", "tag": "못", "req": "「못 + 동사」 형태로 쓰십시오.", "hint": "못 · 「못 + 동사」 형태로 쓰십시오."}, {"n": 19, "type": "grammar", "prompt": "我不会做饭。", "tag": "-지 못하다", "req": "「-지 못하다」 형태로 쓰십시오.", "hint": "-지 못하다 · 「-지 못하다」 형태로 쓰십시오."}, {"n": 20, "type": "grammar", "prompt": "睡觉之前请关灯。", "tag": "-기 전에", "req": "", "hint": "-기 전에"}, {"n": 21, "type": "vocab", "prompt": "迎春花", "ctx": "春天公园里开满了<u>迎春花</u>。", "hint": "명사"}, {"n": 22, "type": "vocab", "prompt": "金达莱（杜鹃花）", "ctx": "山上的<u>金达莱</u>都开了。", "hint": "명사"}, {"n": 23, "type": "vocab", "prompt": "红叶", "ctx": "秋天我们去山上看<u>红叶</u>吧。", "hint": "명사"}, {"n": 24, "type": "vocab", "prompt": "闲，有空", "ctx": "这个周末我很<u>闲</u>。", "hint": "형용사"}, {"n": 25, "type": "vocab", "prompt": "乡下，农村", "ctx": "我奶奶住在<u>乡下</u>。", "hint": "명사"}, {"n": 26, "type": "vocab", "prompt": "樱花", "ctx": "四月的<u>樱花</u>开得很美。", "hint": "명사"}, {"n": 27, "type": "vocab", "prompt": "（天）阴", "ctx": "今天天气很<u>阴</u>，好像要下雨。", "hint": "형용사"}, {"n": 28, "type": "vocab", "prompt": "雾", "ctx": "早上<u>雾</u>很大，看不清路。", "hint": "명사"}, {"n": 29, "type": "vocab", "prompt": "（雨、雪）停", "ctx": "雨<u>停</u>了，我们出去吧。", "hint": "자동사"}, {"n": 30, "type": "vocab", "prompt": "天气预报", "ctx": "看了<u>天气预报</u>，明天会下雪。", "hint": "명사"}, {"n": 31, "type": "vocab", "prompt": "要洗的衣服，洗衣服（这件事）", "ctx": "周末我要<u>洗衣服</u>。（___를 하다）", "hint": "명사"}, {"n": 32, "type": "vocab", "prompt": "（天气）凉飕飕的，有点冷", "ctx": "早晚<u>凉飕飕</u>的，多穿点衣服。", "hint": "형용사"}, {"n": 33, "type": "vocab", "prompt": "潮湿", "ctx": "夏天韩国很<u>潮湿</u>。", "hint": "형용사"}, {"n": 34, "type": "vocab", "prompt": "海边", "ctx": "我们去<u>海边</u>散步吧。", "hint": "명사"}, {"n": 35, "type": "vocab", "prompt": "梅雨季", "ctx": "<u>梅雨季</u>每天都下雨。", "hint": "명사"}, {"n": 36, "type": "vocab", "prompt": "打雪仗", "ctx": "孩子们在外面<u>打雪仗</u>。（___을 하다）", "hint": "명사"}, {"n": 37, "type": "vocab", "prompt": "避暑", "ctx": "夏天我们去山里<u>避暑</u>。（___를 가다）", "hint": "명사"}, {"n": 38, "type": "vocab", "prompt": "海水浴场", "ctx": "釜山的<u>海水浴场</u>人很多。", "hint": "명사"}, {"n": 39, "type": "vocab", "prompt": "耳环", "ctx": "她今天戴了很漂亮的<u>耳环</u>。", "hint": "명사"}, {"n": 40, "type": "vocab", "prompt": "郊游", "ctx": "明天学校去<u>郊游</u>。（___을 가다）", "hint": "명사"}, {"n": 41, "type": "mc", "prompt": "저는 고기를 (　　) 동생은 생선을 좋아해요.", "options": ["좋아한데", "좋아하는데", "좋아하은데", "좋아할데"], "hint": "-는데"}, {"n": 42, "type": "mc", "prompt": "방은 (　　) 깨끗하지 않아요.", "options": ["넓는데", "넓을데", "넓은데", "넓데"], "hint": "-(으)ㄴ데"}, {"n": 43, "type": "mc", "prompt": "저는 한국 노래를 (　　).", "options": ["부를 수 있어요", "부르을 수 있어요", "불을 수 있어요", "부르는 수 있어요"], "hint": "-(으)ㄹ 수 있다"}, {"n": 44, "type": "mc", "prompt": "밥을 (　　) 바로 운동하면 안 돼요.", "options": ["먹는 후에", "먹을 후에", "먹기 후에", "먹은 후에"], "hint": "-(으)ㄴ 후에"}, {"n": 45, "type": "mc", "prompt": "하늘을 보니까 오후에 비가 (　　).", "options": ["오고 있었어요", "오겠어요", "올 수 없어요", "오기 전에요"], "hint": "-겠-"}, {"n": 46, "type": "mc", "prompt": "지하철이 버스(　　) 더 빨라요.", "options": ["보다", "처럼", "하고", "에서"], "hint": "N보다"}, {"n": 47, "type": "mc", "prompt": "길이 다 젖었어요. 어제 비가 많이 (　　) 것 같아요.", "options": ["오는", "올", "온", "오던"], "hint": "-(으)ㄴ 것 같다"}, {"n": 48, "type": "mc", "prompt": "와, 이 방이 참 (　　)!", "options": ["넓는군요", "넓군요", "넓은군요", "넓을군요"], "hint": "-군요"}, {"n": 49, "type": "mc", "prompt": "동생은 지금 방에서 음악을 (　　).", "options": ["들어 있어요", "듣은 후에요", "들을 수 없었어요", "듣고 있어요"], "hint": "-고 있다"}, {"n": 50, "type": "mc", "prompt": "추워서 장갑을 (　　) 있어요.", "options": ["입고", "끼고", "쓰고", "신고"], "hint": "입다/쓰다/끼다/신다"}, {"n": 51, "type": "grammar", "prompt": "我喜欢夏天，但是我姐姐喜欢冬天。", "tag": "-는데", "req": "", "hint": "-는데"}, {"n": 52, "type": "grammar", "prompt": "这件衣服很漂亮，但是太贵了。", "tag": "-(으)ㄴ데", "req": "", "hint": "-(으)ㄴ데"}, {"n": 53, "type": "grammar", "prompt": "我会弹钢琴。", "tag": "-(으)ㄹ 수 있다", "req": "", "hint": "-(으)ㄹ 수 있다"}, {"n": 54, "type": "grammar", "prompt": "路太复杂了，所以没法开车。", "tag": "-(으)ㄹ 수 없다", "req": "", "hint": "-(으)ㄹ 수 없다"}, {"n": 55, "type": "grammar", "prompt": "下班以后我去运动。", "tag": "-(으)ㄴ 후에", "req": "「동사 + -(으)ㄴ 후에」 형태로 쓰십시오.", "hint": "-(으)ㄴ 후에 · 「동사 + -(으)ㄴ 후에」 형태로 쓰십시오."}, {"n": 56, "type": "grammar", "prompt": "明天应该会很冷。", "tag": "-겠-", "req": "", "hint": "-겠-"}, {"n": 57, "type": "grammar", "prompt": "中国的人比韩国多。", "tag": "N보다", "req": "", "hint": "N보다"}, {"n": 58, "type": "grammar", "prompt": "好像快要下雪了。", "tag": "-(으)ㄹ 것 같다", "req": "", "hint": "-(으)ㄹ 것 같다"}, {"n": 59, "type": "grammar", "prompt": "（原来）你很会唱歌啊！", "tag": "-는군요", "req": "", "hint": "-는군요"}, {"n": 60, "type": "grammar", "prompt": "弟弟正在房间里看书。", "tag": "-고 있다", "req": "", "hint": "-고 있다"}]};</script>
+
+<div id="cover" class="wrap cover">
+  <div class="brandbar"><span>跟Gunny学韩语</span><span class="pill">韩国语能力测试</span></div>
+  <div class="photo" role="img" aria-label="Gunny"></div>
+  <div class="brand">跟Gunny学韩语</div>
+  <div class="brand-sub">Korean with Gunny · 一起学韩语吧</div>
+  <div class="brand-note">有任何关于学韩语的问题，随时欢迎来问我。不过约会邀请就恕我拒绝了，我有女朋友了。</div>
+  <div class="hero">
+    <div class="title" id="quizTitle"></div>
+    <div class="title-sub" id="coverSub"></div>
+    <div class="meta">
+      <div class="stu"><small>考生</small><b id="stu"></b></div>
+      <div><small>考试日期</small><b id="dt"></b></div>
+      <div><small>老师</small><b>Gunny</b></div>
+      <div><small>题数</small><b id="qcount"></b></div>
+    </div>
+    <ul class="rules">
+      <li><span class="ic">1</span><span>所有答案请<b>用手指亲手书写</b>（也可以用 Apple Pencil），不能用键盘输入。</span></li>
+      <li><span class="ic">2</span><span><b>词汇</b>：看中文意思和例句，在框里写出正确的韩语单词。</span></li>
+      <li><span class="ic">3</span><span><b>语法</b>：选择题请选出一个正确答案；书写题请用指定的语法，把中文句子写成韩语。</span></li>
+      <li><span class="ic">4</span><span>在答题框<b>外面</b>滑动页面，在答题框<b>里面</b>写字。写错了请点「되돌리기」（撤销）或「지우기」（清除）。</span></li>
+      <li><span class="ic">5</span><span>全部写完后，请点 <b>「답안 제출」（提交答案）</b>。提交后就不能修改了。</span></li>
+      <li><span class="ic">6</span><span>考试结束后，请把答题纸交给帅哥。</span></li>
+    </ul>
+  </div>
+  <button class="start" id="startBtn">开始考试 →</button>
+  <div class="foot-note">你的答案会自动保存在这台 iPad 上。</div>
+</div>
+
+<div id="exam" class="hidden">
+  <div class="bar"><div class="bar-in">
+    <span class="who" id="barWho"></span>
+    <span class="stat" id="progress"></span>
+    <span class="stat time" id="timer"></span>
+    <span class="grow"></span>
+    <button class="submit" id="submitBtn">답안 제출</button>
+  </div><div class="progress"><div class="track"><div class="fill" id="fill"></div></div></div></div>
+  <div class="wrap" id="qwrap"></div>
+</div>
+
+<div class="modal" id="confirmModal"><div class="card">
+  <h3>답안을 제출하시겠습니까?</h3>
+  <p id="confirmText"></p>
+  <div class="row"><button class="btn-ghost" id="cancelBtn">다시 확인하기</button><button class="btn-main" id="okBtn">제출</button></div>
+</div></div>
+
+<div class="modal" id="statusModal"><div class="card">
+  <div class="big" id="statusIcon"></div>
+  <h3 id="statusTitle">제출 중…</h3>
+  <p id="statusText">페이지를 닫지 마십시오.</p>
+  <div class="row hidden" id="retryRow"><button class="btn-main" id="retryBtn">다시 제출</button></div>
+</div></div>
+
+<script>
+(() => {
+  const Q = window.QUIZ;
+  const KEY = "gunny-quiz:" + Q.quizId;
+  const $ = (id) => document.getElementById(id);
+  const store = {
+    get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } },
+    set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
+  };
+  let state = Object.assign({ strokes: {}, choices: {}, startedAt: null, submittedAt: null }, store.get());
+  const save = () => store.set(state);
+
+  $("quizTitle").textContent = Q.quizZh || Q.quiz;
+  $("stu").textContent = Q.student;
+  $("dt").textContent = Q.dateZh || Q.date;
+  $("coverSub").textContent = Q.coverSubZh || "";
+  $("qcount").textContent = Q.questions.length;
+  $("barWho").textContent = Q.student;
+
+  // ---------- handwriting pads ----------
+  const VW = 600, VH = 150;         // logical size of every vocab pad (same for all, so no length hint)
+  const GW = 1000, GH = 250;        // logical size of grammar pad
+  const pads = {};
+
+  function sizeOf(q) { return q.type === "vocab" ? [VW, VH] : [GW, GH]; }
+
+  function drawGuides(ctx, q, w, h) {
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
+    if (q.type === "vocab") {
+      ctx.strokeStyle = "#ecc0ce"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(0, VH * 0.85); ctx.lineTo(w, VH * 0.85); ctx.stroke();
+    } else {
+      ctx.strokeStyle = "#ecc0ce"; ctx.lineWidth = 1.5;
+      [GH * 0.45, GH * 0.92].forEach((y) => { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); });
+    }
+  }
+
+  function drawStroke(ctx, s) {
+    ctx.strokeStyle = "#111"; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    const pts = s;
+    if (pts.length === 1) {
+      ctx.fillStyle = "#111"; ctx.beginPath(); ctx.arc(pts[0][0], pts[0][1], width(pts[0][2]) / 2, 0, 7); ctx.fill(); return;
+    }
+    for (let i = 1; i < pts.length; i++) {
+      ctx.lineWidth = width(pts[i][2]);
+      ctx.beginPath(); ctx.moveTo(pts[i - 1][0], pts[i - 1][1]); ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke();
+    }
+  }
+  function width(p) { return 2.2 + 3.2 * (p || 0.5); }
+
+  function render(n) {
+    const { canvas, q } = pads[n];
+    const [w, h] = sizeOf(q);
+    const ctx = canvas.getContext("2d");
+    const k = canvas.width / w;
+    ctx.setTransform(k, 0, 0, k, 0, 0);
+    drawGuides(ctx, q, w, h);
+    (state.strokes[n] || []).forEach((s) => drawStroke(ctx, s));
+  }
+
+  function fit(n) {
+    const { canvas, q } = pads[n];
+    const [w, h] = sizeOf(q);
+    const cssW = canvas.getBoundingClientRect().width || w;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    canvas.width = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssW * dpr * h / w);
+    render(n);
+  }
+
+  function attach(n) {
+    const { canvas, q } = pads[n];
+    const [w, h] = sizeOf(q);
+    let cur = null, pid = null;
+    const pt = (e) => {
+      const r = canvas.getBoundingClientRect();
+      const p = e.pointerType === "pen" ? (e.pressure || 0.5) : 0.5;
+      return [+((e.clientX - r.left) * w / r.width).toFixed(1), +((e.clientY - r.top) * h / r.height).toFixed(1), +p.toFixed(2)];
+    };
+    const allowed = (e) => e.pointerType === "pen" || e.pointerType === "mouse" ||
+                           (e.pointerType === "touch" && document.body.classList.contains("finger"));
+    // iOS: stop the page from scrolling when the Apple Pencil touches the pad; fingers still scroll
+    canvas.addEventListener("touchstart", (e) => {
+      if (document.body.classList.contains("finger") || [...e.touches].some((t) => t.touchType === "stylus")) e.preventDefault();
+    }, { passive: false });
+    canvas.addEventListener("touchmove", (e) => {
+      if (cur) e.preventDefault();
+    }, { passive: false });
+    canvas.addEventListener("pointerdown", (e) => {
+      if (state.submittedAt || !allowed(e) || cur) return;
+      e.preventDefault();
+      pid = e.pointerId; try { canvas.setPointerCapture(pid); } catch (_) {}
+      cur = [pt(e)];
+      (state.strokes[n] = state.strokes[n] || []).push(cur);
+      render(n);
+    });
+    canvas.addEventListener("pointermove", (e) => {
+      if (!cur || e.pointerId !== pid) return;
+      const co = e.getCoalescedEvents ? e.getCoalescedEvents() : [];
+      const evs = co.length ? co : [e];
+      evs.forEach((ev) => cur.push(pt(ev)));
+      render(n);
+    });
+    const end = (e) => {
+      if (!cur || e.pointerId !== pid) return;
+      cur = null; pid = null; save(); refresh();
+    };
+    canvas.addEventListener("pointerup", end);
+    canvas.addEventListener("pointercancel", end);
+  }
+
+  function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+  function build() {
+    const wrap = $("qwrap");
+    let html = "";
+    const shownEx = {};
+    Q.questions.forEach((q) => {
+      const sec = (Q.sections || []).find((x) => x.start === q.n);
+      if (sec) html += `<div class="section"><div class="eyebrow">${esc(sec.eyebrow)}</div><h2>${esc(sec.title)}</h2><span>${esc(sec.direction)}</span></div>`;
+      if (q.type === "vocab" && !shownEx.vocab) { shownEx.vocab = true; html += `<div class="example"><div class="ex-head">작성 예시</div><div class="ex-q">〈보기〉 图书馆 → 도서관</div>
+          <div class="ex-grid">
+            <figure class="good"><img src="ex/v_good.png" alt=""><figcaption><b>좋은 예</b>크고 또박또박, 기준선 위에 썼습니다.</figcaption></figure>
+            <figure class="bad"><img src="ex/v_bad1.png" alt=""><figcaption><b>나쁜 예</b>글씨가 너무 작고 구석에 있습니다.</figcaption></figure>
+            <figure class="bad"><img src="ex/v_bad2.png" alt=""><figcaption><b>나쁜 예</b>고친 글씨를 겹쳐 썼습니다. 「지우기」를 누르고 다시 쓰십시오.</figcaption></figure>
+          </div></div>`; }
+      if (q.type === "grammar" && !shownEx.grammar) { shownEx.grammar = true; html += `<div class="example"><div class="ex-head">작성 예시</div><div class="ex-q">〈보기〉 我周末见朋友。 → 저는 주말에 친구를 만나요.</div>
+          <div class="ex-grid wide">
+            <figure class="good"><img src="ex/g_good.png" alt=""><figcaption><b>좋은 예</b>띄어쓰기를 지키고, 첫 번째 줄부터 기준선 위에 썼습니다. 길면 두 번째 줄에 이어 쓰십시오.</figcaption></figure>
+            <figure class="bad"><img src="ex/g_bad1.png" alt=""><figcaption><b>나쁜 예</b>글씨가 기울어지고 너무 커서 칸 밖으로 나갔습니다.</figcaption></figure>
+            <figure class="bad"><img src="ex/g_bad2.png" alt=""><figcaption><b>나쁜 예</b>띄어쓰기가 없고, 틀린 부분 위에 덧칠했습니다. 「되돌리기」를 사용하십시오.</figcaption></figure>
+          </div></div>`; }
+      const head = q.type === "vocab"
+        ? `<div class="qtop"><span class="num">${q.n}</span><span class="prompt">${esc(q.prompt)}</span><span class="pos">${esc(q.hint)}</span></div>
+           <div class="ctx">예: ${q.ctx}</div>`
+        : `<div class="qtop"><span class="num">${q.n}</span><span class="prompt">${esc(q.prompt)}</span><span class="tag">${esc(q.tag)}</span></div>
+           ${q.req ? `<div class="req">※ ${esc(q.req)}</div>` : ""}`;
+      if (q.type === "mc") {
+        html += `<div class="q" id="q${q.n}"><div class="qtop"><span class="num">${q.n}</span><span class="prompt">${esc(q.prompt)}</span></div>
+          <div class="opts">${q.options.map((o, i) => `<button class="opt" data-q="${q.n}" data-i="${i}"><span class="mark">${"①②③④"[i]}</span>${esc(o)}</button>`).join("")}</div>
+        </div>`;
+        return;
+      }
+      html += `<div class="q" id="q${q.n}">${head}
+        <div class="pad ${q.type}"><canvas data-n="${q.n}"></canvas></div>
+        <div class="tools"><button data-undo="${q.n}">↶ 되돌리기</button><button data-clear="${q.n}">지우기</button></div>
+      </div>`;
+    });
+    html += `<div class="endcard">마지막 문항입니다. 답안을 다시 확인한 후 제출하십시오.<br><button class="start" id="endSubmit">답안 제출</button></div>`;
+    wrap.innerHTML = html;
+    $("endSubmit").addEventListener("click", () => $("submitBtn").click());
+    Q.questions.filter((q) => q.type !== "mc").forEach((q) => {
+      pads[q.n] = { q, canvas: wrap.querySelector(`canvas[data-n="${q.n}"]`) };
+      attach(q.n);
+    });
+    wrap.addEventListener("click", (e) => {
+      const opt = e.target.closest(".opt");
+      if (opt) {
+        if (state.submittedAt) return;
+        state.choices[opt.dataset.q] = +opt.dataset.i;
+        save(); refresh(); return;
+      }
+      const u = e.target.dataset.undo, c = e.target.dataset.clear;
+      if (u) { (state.strokes[u] || []).pop(); }
+      else if (c) { state.strokes[c] = []; }
+      else return;
+      save(); render(+(u || c)); refresh();
+    });
+    let t; window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(() => Object.keys(pads).forEach(fit), 150); });
+    Object.keys(pads).forEach(fit);
+  }
+
+  const isDone = (q) => q.type === "mc" ? state.choices[q.n] != null : !!(state.strokes[q.n] || []).length;
+  const answered = () => Q.questions.filter(isDone).length;
+
+  function refresh() {
+    Q.questions.forEach((q) => {
+      $("q" + q.n).classList.toggle("done", isDone(q));
+      if (q.type === "mc") $("q" + q.n).querySelectorAll(".opt").forEach((b) => b.classList.toggle("sel", state.choices[q.n] === +b.dataset.i));
+    });
+    $("progress").textContent = `${answered()}/${Q.questions.length}`;
+    $("fill").style.width = (answered() / Q.questions.length * 100) + "%";
+  }
+
+  function tick() {
+    if (!state.startedAt) return;
+    const end = state.submittedAt || Date.now();
+    const s = Math.floor((end - state.startedAt) / 1000);
+    $("timer").textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  }
+
+  function startExam() {
+    if (!state.startedAt) { state.startedAt = Date.now(); save(); }
+    $("cover").classList.add("hidden");
+    $("exam").classList.remove("hidden");
+    build(); refresh(); tick(); setInterval(tick, 1000);
+    if (state.submittedAt) { lock(); loadResult(); }
+    window.scrollTo(0, 0);
+  }
+
+  // ---------- submit ----------
+  function exportPng(q) {
+    const [w, h] = sizeOf(q);
+    const c = document.createElement("canvas");
+    c.width = w; c.height = h;
+    const ctx = c.getContext("2d");
+    drawGuides(ctx, q, w, h);
+    (state.strokes[q.n] || []).forEach((s) => drawStroke(ctx, s));
+    return c.toDataURL("image/png").split(",")[1];
+  }
+
+  // ---------- results (published by the teacher after grading) ----------
+  async function loadResult() {
+    if (!state.submissionId || !Q.endpoint) return;
+    let box = $("resultBox");
+    if (!box) {
+      box = document.createElement("div"); box.id = "resultBox"; box.className = "result";
+      $("qwrap").prepend(box);
+    }
+    box.innerHTML = `<div class="r-wait">채점 중입니다. 선생님이 채점을 마치면 여기에 결과가 표시됩니다.<br><button class="chip" id="reloadRes">결과 다시 확인</button></div>`;
+    $("reloadRes").onclick = loadResult;
+    try {
+      const res = await fetch(`${Q.endpoint}?action=result&id=${encodeURIComponent(state.submissionId)}`);
+      const d = await res.json();
+      if (!d.ok || !d.ready) return;
+      showResult(d.result, box);
+    } catch (e) { /* keep the waiting message */ }
+  }
+
+  function showResult(r, box) {
+    box.innerHTML = `<div class="r-eyebrow">채점 결과</div>
+      <div class="r-score">${r.score}<span> / ${r.max}</span></div>
+      <div class="r-sum">${esc(r.summary_zh || "")}</div>`;
+    (r.items || []).forEach((x) => {
+      const card = $("q" + x.n); if (!card) return;
+      card.querySelectorAll(".r-item").forEach((e) => e.remove());
+      const cls = x.score === 1 ? "ok" : x.score === 0.5 ? "half" : "no";
+      const label = x.score === 1 ? "정답" : x.score === 0.5 ? "부분 정답" : "오답";
+      const el = document.createElement("div"); el.className = "r-item " + cls;
+      el.innerHTML = `<b>${label} · ${x.score}점</b>${x.score === 1 ? "" : ` <span class="r-ans">정답: ${esc(x.answer || "")}</span>`}
+        <div>${esc(x.feedback_zh || "")}</div>`;
+      card.appendChild(el);
+    });
+  }
+
+  function lock() {
+    document.body.classList.add("locked");
+    $("submitBtn").textContent = "제출 완료 ✓";
+    $("submitBtn").disabled = true;
+    const es = $("endSubmit"); if (es) { es.disabled = true; es.textContent = "제출 완료 ✓"; }
+  }
+
+  function status(icon, title, text, retry) {
+    $("statusIcon").className = "big " + icon; $("statusIcon").textContent = { ok: "✓", warn: "!" }[icon] || ""; $("statusTitle").textContent = title; $("statusText").textContent = text;
+    $("retryRow").classList.toggle("hidden", !retry);
+    $("statusModal").classList.add("show");
+  }
+
+  async function send() {
+    $("confirmModal").classList.remove("show");
+    if (!Q.endpoint) { status("warn", "제출 주소가 설정되지 않았습니다", "Gunny 선생님께 알려 주십시오. 답안은 이 iPad에 저장되어 있습니다.", false); return; }
+    status("wait", "제출 중…", "약 30초 정도 걸립니다. 페이지를 닫지 마십시오.", false);
+    const submittedAt = Date.now();
+    const payload = {
+      quizId: Q.quizId, quiz: Q.quiz, student: Q.student,
+      startedAt: new Date(state.startedAt).toISOString(), submittedAt: new Date(submittedAt).toISOString(),
+      seconds: Math.round((submittedAt - state.startedAt) / 1000),
+      answers: Q.questions.map((q) => {
+        if (q.type === "mc") {
+          const c = state.choices[q.n];
+          return { n: q.n, type: "mc", prompt: q.prompt, hint: q.hint, options: q.options, blank: c == null, choice: c == null ? null : c };
+        }
+        const blank = !(state.strokes[q.n] || []).length;
+        return { n: q.n, type: q.type, prompt: q.prompt, hint: q.hint, blank, png: blank ? "" : exportPng(q) };
+      }),
+    };
+    try {
+      // text/plain avoids a CORS preflight, which Apps Script can't answer
+      const res = await fetch(Q.endpoint, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.ok === false) throw new Error(data.error || res.status);
+      state.submittedAt = submittedAt; state.submissionId = data.id || null; save(); lock(); tick(); loadResult();
+      status("ok", "제출되었습니다", "수고하셨습니다! 채점이 끝나면 이 페이지에서 결과를 확인할 수 있습니다.", false);
+      setTimeout(() => $("statusModal").classList.remove("show"), 4000);
+    } catch (err) {
+      status("warn", "제출에 실패했습니다", "인터넷 연결을 확인한 후 다시 제출하십시오. 답안은 이 iPad에 저장되어 있습니다.", true);
+    }
+  }
+
+  $("startBtn").addEventListener("click", startExam);
+  $("submitBtn").addEventListener("click", () => {
+    const left = Q.questions.length - answered();
+    $("confirmText").textContent = left ? `아직 답하지 않은 문항이 ${left}개 있습니다. 제출 후에는 답을 고칠 수 없습니다.` : "모든 문항에 답했습니다. 제출 후에는 답을 고칠 수 없습니다.";
+    $("confirmModal").classList.add("show");
+  });
+  $("cancelBtn").addEventListener("click", () => $("confirmModal").classList.remove("show"));
+  $("okBtn").addEventListener("click", send);
+  $("retryBtn").addEventListener("click", send);
+  $("statusModal").addEventListener("click", (e) => { if (e.target.id === "statusModal" && state.submittedAt) e.currentTarget.classList.remove("show"); });
+
+  if (state.startedAt) startExam();
+})();
+</script>
+</body>
+</html>
