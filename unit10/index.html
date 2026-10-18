@@ -509,9 +509,16 @@ button:active { transform: scale(.96); }
     box.innerHTML = `<div class="r-wait">채점 중입니다. 선생님이 채점을 마치면 여기에 결과가 표시됩니다.<br><button class="chip" id="reloadRes">결과 다시 확인</button></div>`;
     $("reloadRes").onclick = loadResult;
     try {
-      const res = await fetch(`${Q.endpoint}?action=result&id=${encodeURIComponent(state.submissionId)}`);
-      const d = await res.json();
-      if (!d.ok || !d.ready) return;
+      const get = async (id) => (await fetch(`${Q.endpoint}?action=result&id=${encodeURIComponent(id)}`)).json();
+      let d = await get(state.submissionId);
+      if (!d.ok || !d.ready) {
+        // this iPad may hold the id of a duplicate/removed submit — use the latest submission for this quiz and student
+        const f = await (await fetch(`${Q.endpoint}?action=find&quizId=${encodeURIComponent(Q.quizId)}&student=${encodeURIComponent(Q.student)}`)).json();
+        if (!f.ok || !f.id || f.id === state.submissionId) return;
+        d = await get(f.id);
+        if (!d.ok || !d.ready) return;
+        state.submissionId = f.id; save();
+      }
       showResult(d.result, box);
     } catch (e) { /* keep the waiting message */ }
   }
